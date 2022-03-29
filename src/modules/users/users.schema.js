@@ -12,9 +12,12 @@ const userSchema = S.object()
   .prop('updatedAt', S.string())
   .extend(userBaseSchema.without('password'));
 
+const userResponseSchema = userSchema;
+const usersResponseSchema = S.array().items(userSchema);
+
 module.exports = {
-  createUserSchema: userBaseSchema,
-  createUserResponseSchema: userSchema,
-  userResponseSchema: userSchema,
-  usersResponseSchema: S.array().items(userSchema),
+  userBaseSchema,
+  userSchema,
+  userResponseSchema,
+  usersResponseSchema,
 };

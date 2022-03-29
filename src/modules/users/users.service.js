@@ -1,16 +1,8 @@
 const prisma = require('../../utils/prisma');
-const { hash } = require('../../utils/password');
 
 async function createUser(data) {
-  const { password, ...input } = data;
-
-  const hashedPassword = await hash(password);
-
   return prisma.user.create({
-    data: {
-      ...input,
-      password: hashedPassword,
-    },
+    data,
   });
 }
 

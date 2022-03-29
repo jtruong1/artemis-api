@@ -1,16 +1,7 @@
-const {
-  createUserHandler,
-  getUsersHandler,
-  getUserHandler,
-} = require('./users.controller');
-const {
-  createUserSchema,
-  createUserResponseSchema,
-  userResponseSchema,
-  usersResponseSchema,
-} = require('./users.schema');
+const { getUsersHandler, getUserHandler } = require('./users.controller');
+const { userResponseSchema, usersResponseSchema } = require('./users.schema');
 
-async function userRoutes(server) {
+async function userRoutes(server, _opts) {
   server.get(
     '/',
     {
@@ -21,19 +12,6 @@ async function userRoutes(server) {
       },
     },
     getUsersHandler
-  );
-
-  server.post(
-    '/',
-    {
-      schema: {
-        body: createUserSchema,
-        response: {
-          201: createUserResponseSchema,
-        },
-      },
-    },
-    createUserHandler
   );
 
   server.get(
