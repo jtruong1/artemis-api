@@ -1,0 +1,24 @@
+{
+  "name": "artemis-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtruong1/artemis-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jtruong1/artemis-api/issues"
+  },
+  "homepage": "https://github.com/jtruong1/artemis-api#readme",
+  "dependencies": {
+    "fastify": "^3.27.4"
+  }
+}
