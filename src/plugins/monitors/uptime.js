@@ -3,26 +3,23 @@ const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const prisma = require('../../utils/prisma');
 
 async function uptimePlugin(server, opts) {
-  const monitor = await prisma.monitor.findUnique({
-    where: {
-      slug: 'uptime',
-    },
-  });
-
   const sites = await prisma.site.findMany({
     where: {
       monitors: {
         some: {
+          slug: 'uptime',
           enabled: true,
-          monitor: {
-            id: monitor.id,
-          },
         },
       },
+    },
+    include: {
+      monitors: true,
     },
   });
 
   sites.forEach((site) => {
+    const monitor = site.monitors.find((monitor) => monitor.slug === 'uptime');
+
     const task = new AsyncTask(
       `monitor site ${site.id} uptime`,
       () => {
@@ -44,48 +41,47 @@ async function uptimePlugin(server, opts) {
           })
           .then(async () => {
             report = {
-              monitor: {
-                connect: { id: monitor.id },
-              },
               ...report,
               updatedAt: new Date(),
             };
 
             try {
-              const reports = await prisma.report.findMany({
-                where: {
-                  site: {
-                    id: site.id,
+              const reports = await prisma.monitor
+                .findUnique({
+                  where: {
+                    id: Number(monitor.id),
                   },
-                  monitor: {
-                    id: monitor.id,
+                })
+                .reports({
+                  //   orderBy: {
+                  //     id: 'desc',
+                  //   },
+                  //   take: 1,
+                });
+
+              const latestReport = reports[reports.length - 1];
+
+              const shouldUpdateReport =
+                report.success && latestReport && latestReport.success;
+
+              await prisma.monitor.update({
+                where: {
+                  id: Number(monitor.id),
+                },
+                data: {
+                  reports: {
+                    upsert: {
+                      create: report,
+                      update: report,
+                      where: {
+                        id: shouldUpdateReport
+                          ? Number(latestReport.id || 0)
+                          : 0,
+                      },
+                    },
                   },
                 },
               });
-
-              const lastReport = reports[reports.length - 1];
-
-              if (report.success && lastReport && lastReport.success) {
-                await prisma.report.update({
-                  where: {
-                    id: lastReport.id,
-                  },
-                  data: {
-                    updatedAt: new Date(),
-                  },
-                });
-              } else {
-                await prisma.site.update({
-                  where: {
-                    id: site.id,
-                  },
-                  data: {
-                    reports: {
-                      create: report,
-                    },
-                  },
-                });
-              }
 
               server.log.info(
                 `${site.label} is ${report.success ? 'up' : 'down'}`

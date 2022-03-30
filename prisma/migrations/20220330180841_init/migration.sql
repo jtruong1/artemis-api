@@ -26,8 +26,10 @@ CREATE TABLE `Site` (
 -- CreateTable
 CREATE TABLE `Monitor` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `site_id` INTEGER NOT NULL,
     `slug` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `enabled` BOOLEAN NOT NULL DEFAULT true,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
@@ -36,19 +38,8 @@ CREATE TABLE `Monitor` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `site_monitor` (
-    `site_id` INTEGER NOT NULL,
-    `monitor_id` INTEGER NOT NULL,
-    `enabled` BOOLEAN NOT NULL DEFAULT true,
-
-    PRIMARY KEY (`site_id`, `monitor_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Report` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `site_id` INTEGER NOT NULL,
-    `monitor_id` INTEGER NOT NULL,
     `success` BOOLEAN NOT NULL,
     `data` JSON NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -57,17 +48,23 @@ CREATE TABLE `Report` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `_MonitorToReport` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_MonitorToReport_AB_unique`(`A`, `B`),
+    INDEX `_MonitorToReport_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Site` ADD CONSTRAINT `Site_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `site_monitor` ADD CONSTRAINT `site_monitor_site_id_fkey` FOREIGN KEY (`site_id`) REFERENCES `Site`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Monitor` ADD CONSTRAINT `Monitor_site_id_fkey` FOREIGN KEY (`site_id`) REFERENCES `Site`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `site_monitor` ADD CONSTRAINT `site_monitor_monitor_id_fkey` FOREIGN KEY (`monitor_id`) REFERENCES `Monitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `_MonitorToReport` ADD FOREIGN KEY (`A`) REFERENCES `Monitor`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Report` ADD CONSTRAINT `Report_site_id_fkey` FOREIGN KEY (`site_id`) REFERENCES `Site`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Report` ADD CONSTRAINT `Report_monitor_id_fkey` FOREIGN KEY (`monitor_id`) REFERENCES `Monitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `_MonitorToReport` ADD FOREIGN KEY (`B`) REFERENCES `Report`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

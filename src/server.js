@@ -37,7 +37,8 @@ const createServer = () => {
 
   server.register(autoloadPlugin, {
     dir: path.join(__dirname, 'modules'),
-    indexPattern: /.*route(\.ts|\.js|\.cjs|\.mjs)$/,
+    ignorePattern: /.*(controller|schema|service).js/,
+    // indexPattern: /.*route(\.ts|\.js|\.cjs|\.mjs)$/,
     options: { prefix: '/api' },
   });
 

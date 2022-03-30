@@ -11,6 +11,13 @@ async function getAllSites(userId) {
         id: Number(userId),
       },
     },
+    include: {
+      monitors: {
+        include: {
+          monitor: true,
+        },
+      },
+    },
   });
 }
 

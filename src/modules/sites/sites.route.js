@@ -30,11 +30,11 @@ async function siteRoutes(server, opts) {
   server.get(
     '/',
     {
-      schema: {
-        response: {
-          200: sitesResponseSchema,
-        },
-      },
+      //   schema: {
+      //     response: {
+      //       200: sitesResponseSchema,
+      //     },
+      //   },
       onRequest: [server.authenticate],
     },
     getAllSitesHandler

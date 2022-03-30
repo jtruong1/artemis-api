@@ -2,7 +2,7 @@ const prisma = require('../src/utils/prisma');
 const { hashPassword } = require('../src/utils/password');
 
 const main = async () => {
-  const john = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: 'john@example.com' },
     update: {},
     create: {
@@ -13,25 +13,10 @@ const main = async () => {
         create: {
           url: 'https://www.google.com/',
           label: 'google.com',
-        },
-      },
-    },
-    include: {
-      sites: true,
-    },
-  });
-
-  await prisma.monitor.upsert({
-    where: { slug: 'uptime' },
-    update: {},
-    create: {
-      slug: 'uptime',
-      name: 'Uptime',
-      sites: {
-        create: {
-          site: {
-            connect: {
-              id: john.sites[0].id,
+          monitors: {
+            create: {
+              slug: 'uptime',
+              name: 'Uptime',
             },
           },
         },

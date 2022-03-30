@@ -18,55 +18,42 @@ model User {
 }
 
 model Site {
-  id        Int           @id @default(autoincrement())
-  user      User          @relation(fields: [userId], references: [id])
-  userId    Int           @map("user_id")
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
   url       String
   label     String
-  createdAt DateTime      @default(now()) @map("created_at")
-  updatedAt DateTime      @updatedAt @map("updated_at")
-  monitors  SiteMonitor[]
-  reports   Report[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  monitors  Monitor[]
 }
 
 model Monitor {
-  id        Int           @id @default(autoincrement())
-  slug      String        @unique
-  name      String
-  createdAt DateTime      @default(now()) @map("created_at")
-  updatedAt DateTime      @updatedAt @map("updated_at")
-  sites     SiteMonitor[]
-  reports   Report[]
-}
-
-model SiteMonitor {
+  id        Int      @id @default(autoincrement())
   site      Site     @relation(fields: [siteId], references: [id])
   siteId    Int      @map("site_id")
-  monitor   Monitor  @relation(fields: [monitorId], references: [id])
-  monitorId Int      @map("monitor_id")
+  slug      String   @unique
+  name      String
   enabled   Boolean  @default(true)
-
-  @@id([siteId, monitorId])
-  @@map("site_monitor")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  reports   Report[]
 }
 
 model Report {
   id        Int      @id @default(autoincrement())
-  site      Site     @relation(fields: [siteId], references: [id])
-  siteId    Int      @map("site_id")
-  monitor   Monitor  @relation(fields: [monitorId], references: [id])
-  monitorId Int      @map("monitor_id")
   success   Boolean
   data      Json?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  monitors  Monitor[]
 }
 
 // model MonitorReport {
 //   monitor   Monitor @relation(fields: [monitorId], references: [id])
-//   monitorId Int
+//   monitorId Int     @map("monitor_id")
 //   report    Report  @relation(fields: [reportId], references: [id])
-//   reportId  Int
+//   reportId  Int     @map("report_id")
 
 //   @@id([monitorId, reportId])
 //   @@map("monitor_report")
