@@ -13,6 +13,7 @@ async function uptimePlugin(server, opts) {
       },
     },
     include: {
+      user: true,
       monitors: true,
     },
   });
@@ -86,6 +87,15 @@ async function uptimePlugin(server, opts) {
               server.log.info(
                 `${site.label} is ${report.success ? 'up' : 'down'}`
               );
+
+              if (!report.success) {
+                server.notify(
+                  site.user,
+                  `Your site ${site.label} is currently ${
+                    report.success ? 'up' : 'down'
+                  }.`
+                );
+              }
             } catch (err) {
               server.log.error(err);
             }
