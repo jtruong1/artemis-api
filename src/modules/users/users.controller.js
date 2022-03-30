@@ -1,10 +1,10 @@
 const { getAllUsers, getUserById } = require('./users.service');
 
-async function getAllUsersHandler(_req, _res) {
+async function getAllUsersHandler(req, res) {
   return await getAllUsers();
 }
 
-async function getSingleUserHandler(req, _res) {
+async function getSingleUserHandler(req, res) {
   const { id } = req.params;
 
   const user = await getUserById(id);

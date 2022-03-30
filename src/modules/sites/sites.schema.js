@@ -3,8 +3,7 @@ const S = require('fluent-json-schema');
 const siteBaseSchema = S.object()
   .additionalProperties(false)
   .prop('url', S.string().format(S.FORMATS.URL).required())
-  .prop('shortUrl', S.string().format(S.FORMATS.HOSTNAME))
-  .prop('label', S.string().minLength(3));
+  .prop('label', S.string().format(S.FORMATS.HOSTNAME));
 
 const siteSchema = S.object()
   .prop('id', S.integer())

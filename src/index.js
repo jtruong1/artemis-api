@@ -6,6 +6,7 @@ const init = async () => {
   try {
     server.ready(async () => {
       await server.listen(process.env.PORT || server.config.PORT);
+      // console.log(server.routes);
     });
   } catch (err) {
     server.log.error(err);

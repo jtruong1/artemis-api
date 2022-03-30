@@ -4,7 +4,7 @@ const {
 } = require('./users.controller');
 const { userResponseSchema, usersResponseSchema } = require('./users.schema');
 
-async function userRoutes(server, _opts) {
+async function userRoutes(server, opts) {
   server.get(
     '/',
     {

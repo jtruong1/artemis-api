@@ -1,3 +1,4 @@
+const extractDomain = require('extract-domain');
 const {
   addSite,
   getAllSites,
@@ -7,15 +8,14 @@ const {
 } = require('./sites.service');
 
 async function addSiteHandler(req, res) {
-  const { url, label } = req.body;
+  const { url } = req.body;
 
   const parsedUrl = parseUrl(url);
 
   try {
     const site = await addSite({
-      ...parsedUrl,
-      label: label || parsedUrl.label,
       userId: req.user.sub,
+      ...parsedUrl,
     });
 
     return res.code(201).send(site);
@@ -24,11 +24,11 @@ async function addSiteHandler(req, res) {
   }
 }
 
-async function getAllSitesHandler(req, _res) {
+async function getAllSitesHandler(req, res) {
   return await getAllSites(req.user.sub);
 }
 
-async function getSingleSiteHandler(req, _res) {
+async function getSingleSiteHandler(req, res) {
   const { id } = req.params;
 
   const site = await getSingleSite(id);
@@ -44,9 +44,9 @@ async function getSingleSiteHandler(req, _res) {
   return site;
 }
 
-async function updateSiteHandler(req, _res) {
+async function updateSiteHandler(req, res) {
   const { id } = req.params;
-  const { url, label } = req.body;
+  const { url } = req.body;
 
   const site = await getSingleSite(id);
 
@@ -58,15 +58,10 @@ async function updateSiteHandler(req, _res) {
     throw this.httpErrors.unauthorized();
   }
 
-  const parsedUrl = parseUrl(url);
-
-  return await updateSite(id, {
-    ...parsedUrl,
-    label: label || parsedUrl.label,
-  });
+  return await updateSite(id, parseUrl(url));
 }
 
-async function deleteSiteHandler(req, _res) {
+async function deleteSiteHandler(req, res) {
   const { id } = req.params;
 
   const site = await getSingleSite(id);
@@ -84,11 +79,11 @@ async function deleteSiteHandler(req, _res) {
 
 function parseUrl(url) {
   const q = new URL(url);
+  const domain = extractDomain(q.hostname, { tld: true });
 
   return {
     url: q.href,
-    shortUrl: q.host,
-    label: q.hostname,
+    label: domain || q.hostname,
   };
 }
 

@@ -11,7 +11,7 @@ const {
   profileResponseSchema,
 } = require('./auth.schema');
 
-async function authRoutes(server, _opts) {
+async function authRoutes(server, opts) {
   server.post(
     '/register',
     {

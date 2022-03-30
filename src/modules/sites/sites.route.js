@@ -12,7 +12,7 @@ const {
   sitesResponseSchema,
 } = require('./sites.schema');
 
-async function siteRoutes(server, _opts) {
+async function siteRoutes(server, opts) {
   server.post(
     '/',
     {

@@ -8,8 +8,8 @@ async function registerHandler(req, res) {
 
   try {
     const user = await createUser({
-      ...input,
       password: hashedPassword,
+      ...input,
     });
 
     return res.code(201).send(user);
@@ -18,7 +18,7 @@ async function registerHandler(req, res) {
   }
 }
 
-async function loginHandler(req, _res) {
+async function loginHandler(req, res) {
   const { email, password } = req.body;
 
   const user = await getUserByEmail(email);
@@ -42,7 +42,7 @@ async function loginHandler(req, _res) {
   };
 }
 
-async function getProfileHandler(req, _res) {
+async function getProfileHandler(req, res) {
   return req.user;
 }
 
