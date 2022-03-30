@@ -1,26 +1,40 @@
+const path = require('path');
 const fastify = require('fastify');
 const envPlugin = require('fastify-env');
 const sensiblePlugin = require('fastify-sensible');
-const authPlugin = require('./plugins/auth');
+const autoloadPlugin = require('fastify-autoload');
 const configSchema = require('./utils/config');
-const authRoutes = require('./modules/auth/auth.route');
-const userRoutes = require('./modules/users/users.route');
 
 const createServer = () => {
   const server = fastify({
-    logger: true,
+    logger: {
+      prettyPrint:
+        process.env.NODE_ENV !== 'production'
+          ? {
+              translateTime: 'HH:MM:ss Z',
+              ignore: 'pid,hostname',
+            }
+          : false,
+    },
   });
+
+  server
+    .register(envPlugin, { schema: configSchema, dotenv: true })
+    .register(sensiblePlugin);
 
   server.get('/', async () => {
     return { hello: 'world' };
   });
 
-  server.register(envPlugin, { schema: configSchema, dotenv: true });
-  server.register(sensiblePlugin);
-  server.register(authPlugin);
+  server.register(autoloadPlugin, {
+    dir: path.join(__dirname, 'plugins'),
+  });
 
-  server.register(authRoutes, { prefix: 'api/auth' });
-  server.register(userRoutes, { prefix: 'api/users' });
+  server.register(autoloadPlugin, {
+    dir: path.join(__dirname, 'modules'),
+    indexPattern: /.*route(\.ts|\.js|\.cjs|\.mjs)$/,
+    options: { prefix: '/api' },
+  });
 
   return server;
 };
