@@ -1,13 +1,13 @@
 const { createServer } = require('./server');
+const config = require('./utils/config');
 
 const server = createServer();
 
 const init = async () => {
   try {
-    server.ready(async () => {
-      await server.listen(process.env.PORT || server.config.PORT);
-      // console.log(server.routes);
-    });
+    await server.listen(process.env.PORT || config.port);
+
+    console.log(server.routes);
   } catch (err) {
     server.log.error(err);
     process.exit(1);

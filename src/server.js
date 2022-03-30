@@ -1,13 +1,11 @@
 const path = require('path');
 const fastify = require('fastify');
-const envPlugin = require('fastify-env');
 const corsPlugin = require('fastify-cors');
 const helmetPlugin = require('fastify-helmet');
 const sensiblePlugin = require('fastify-sensible');
 const schedulePlugin = require('fastify-schedule');
 const routesPlugin = require('fastify-routes');
 const autoloadPlugin = require('fastify-autoload');
-const configSchema = require('./utils/config');
 
 const createServer = () => {
   const server = fastify({
@@ -23,14 +21,13 @@ const createServer = () => {
   });
 
   server
-    .register(envPlugin, { schema: configSchema, dotenv: true })
     .register(corsPlugin)
     .register(helmetPlugin)
     .register(sensiblePlugin)
     .register(schedulePlugin)
     .register(routesPlugin);
 
-  server.get('/', async () => {
+  server.get('/', async (req, res) => {
     return { hello: 'world' };
   });
 

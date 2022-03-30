@@ -71,7 +71,7 @@ async function uptimePlugin(server, opts) {
                     id: lastReport.id,
                   },
                   data: {
-                    checkedAt: new Date(),
+                    updatedAt: new Date(),
                   },
                 });
               } else {
