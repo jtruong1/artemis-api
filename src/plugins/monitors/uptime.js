@@ -91,9 +91,7 @@ async function uptimePlugin(server, opts) {
               if (!report.success) {
                 server.notify(
                   site.user,
-                  `Your site ${site.label} is currently ${
-                    report.success ? 'up' : 'down'
-                  }.`
+                  `Your site ${site.label} is currently down.`
                 );
               }
             } catch (err) {
