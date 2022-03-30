@@ -1,4 +1,7 @@
-const { getUsersHandler, getUserHandler } = require('./users.controller');
+const {
+  getAllUsersHandler,
+  getSingleUserHandler,
+} = require('./users.controller');
 const { userResponseSchema, usersResponseSchema } = require('./users.schema');
 
 async function userRoutes(server, _opts) {
@@ -11,7 +14,7 @@ async function userRoutes(server, _opts) {
         },
       },
     },
-    getUsersHandler
+    getAllUsersHandler
   );
 
   server.get(
@@ -23,7 +26,7 @@ async function userRoutes(server, _opts) {
         },
       },
     },
-    getUserHandler
+    getSingleUserHandler
   );
 }
 

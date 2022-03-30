@@ -1,13 +1,13 @@
-const { findUsers, findUserById } = require('./users.service');
+const { getAllUsers, getUserById } = require('./users.service');
 
-async function getUsersHandler(_req, _res) {
-  return await findUsers();
+async function getAllUsersHandler(_req, _res) {
+  return await getAllUsers();
 }
 
-async function getUserHandler(req, _res) {
+async function getSingleUserHandler(req, _res) {
   const { id } = req.params;
 
-  const user = await findUserById(id);
+  const user = await getUserById(id);
 
   if (!user) {
     throw this.httpErrors.notFound();
@@ -17,6 +17,6 @@ async function getUserHandler(req, _res) {
 }
 
 module.exports = {
-  getUsersHandler,
-  getUserHandler,
+  getAllUsersHandler,
+  getSingleUserHandler,
 };

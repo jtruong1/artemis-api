@@ -13,6 +13,7 @@ const userSchema = S.object()
   .extend(userBaseSchema.without('password'));
 
 const userResponseSchema = userSchema;
+
 const usersResponseSchema = S.array().items(userSchema);
 
 module.exports = {

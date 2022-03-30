@@ -1,4 +1,4 @@
-const { createUser, findUserByEmail } = require('../users/users.service');
+const { createUser, getUserByEmail } = require('../users/users.service');
 const { hashPassword, comparePassword } = require('../../utils/password');
 
 async function registerHandler(req, res) {
@@ -21,7 +21,7 @@ async function registerHandler(req, res) {
 async function loginHandler(req, _res) {
   const { email, password } = req.body;
 
-  const user = await findUserByEmail(email);
+  const user = await getUserByEmail(email);
 
   if (!user) {
     throw this.httpErrors.unauthorized(
@@ -37,7 +37,9 @@ async function loginHandler(req, _res) {
     );
   }
 
-  return { accessToken: this.jwt.sign({ password, ...user }) };
+  return {
+    accessToken: this.jwt.sign({ sub: user.id, name: user.name }),
+  };
 }
 
 async function getProfileHandler(req, _res) {

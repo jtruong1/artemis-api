@@ -6,17 +6,17 @@ async function createUser(data) {
   });
 }
 
-async function findUsers() {
+async function getAllUsers() {
   return prisma.user.findMany();
 }
 
-async function findUserById(id) {
+async function getUserById(id) {
   return prisma.user.findUnique({
     where: { id: Number(id) },
   });
 }
 
-async function findUserByEmail(email) {
+async function getUserByEmail(email) {
   return prisma.user.findUnique({
     where: { email },
   });
@@ -24,7 +24,7 @@ async function findUserByEmail(email) {
 
 module.exports = {
   createUser,
-  findUsers,
-  findUserById,
-  findUserByEmail,
+  getAllUsers,
+  getUserById,
+  getUserByEmail,
 };
