@@ -1,6 +1,8 @@
 const path = require('path');
 const fastify = require('fastify');
 const envPlugin = require('fastify-env');
+const corsPlugin = require('fastify-cors');
+const helmetPlugin = require('fastify-helmet');
 const sensiblePlugin = require('fastify-sensible');
 const autoloadPlugin = require('fastify-autoload');
 const configSchema = require('./utils/config');
@@ -20,6 +22,8 @@ const createServer = () => {
 
   server
     .register(envPlugin, { schema: configSchema, dotenv: true })
+    .register(corsPlugin)
+    .register(helmetPlugin)
     .register(sensiblePlugin);
 
   server.get('/', async () => {
