@@ -1,8 +1,5 @@
 const S = require('fluent-json-schema');
-const {
-  monitorResponseSchema,
-  monitorsResponseSchema,
-} = require('../monitors/monitors.schema');
+const { monitorsResponseSchema } = require('../monitors/monitors.schema');
 
 const siteBaseSchema = S.object()
   .additionalProperties(false)
@@ -13,6 +10,7 @@ const siteSchema = S.object()
   .prop('id', S.integer())
   .prop('createdAt', S.string())
   .prop('updatedAt', S.string())
+  .prop('monitors', monitorsResponseSchema)
   .extend(siteBaseSchema);
 
 const addSiteSchema = siteBaseSchema;

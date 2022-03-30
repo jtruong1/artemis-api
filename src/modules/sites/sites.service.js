@@ -12,11 +12,7 @@ async function getAllSites(userId) {
       },
     },
     include: {
-      monitors: {
-        include: {
-          monitor: true,
-        },
-      },
+      monitors: true,
     },
   });
 }
