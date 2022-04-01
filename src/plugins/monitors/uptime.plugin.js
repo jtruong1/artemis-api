@@ -1,6 +1,7 @@
 const fp = require('fastify-plugin');
 const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const prisma = require('../../utils/prisma.util');
+const { parseCertificate } = require('../../utils/certificate.util');
 
 async function uptimePlugin(server, _opts) {
   const monitors = await prisma.monitor.findMany({
@@ -26,13 +27,22 @@ async function uptimePlugin(server, _opts) {
           .then((res) => {
             report = {
               success: true,
-              data: { duration: res.duration },
+              data: {
+                uptime: {
+                  duration: res.duration,
+                  certificate: parseCertificate(res.request.res),
+                },
+              },
             };
+
+            // console.log(res.request.res.socket.getPeerCertificate());
           })
           .catch((err) => {
             report = {
               success: false,
-              data: { error: err.message },
+              data: {
+                uptime: { error: err.message },
+              },
             };
           })
           .then(async () => {
