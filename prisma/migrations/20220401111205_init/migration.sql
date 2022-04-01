@@ -17,7 +17,9 @@ CREATE TABLE `Monitor` (
     `user_id` INTEGER NOT NULL,
     `url` VARCHAR(191) NOT NULL,
     `label` VARCHAR(191) NOT NULL,
-    `status` ENUM('PENDING', 'INACTIVE', 'UP', 'DOWN') NOT NULL DEFAULT 'PENDING',
+    `type` ENUM('uptime') NOT NULL DEFAULT 'uptime',
+    `check_interval` INTEGER NOT NULL DEFAULT 60,
+    `status` ENUM('pending', 'paused', 'up', 'down') NOT NULL DEFAULT 'pending',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 

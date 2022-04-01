@@ -5,8 +5,9 @@ const prisma = require('../../utils/prisma.util');
 async function uptimePlugin(server, _opts) {
   const monitors = await prisma.monitor.findMany({
     where: {
+      type: 'uptime',
       NOT: {
-        status: 'inactive',
+        status: 'paused',
       },
     },
     include: {
@@ -80,7 +81,7 @@ async function uptimePlugin(server, _opts) {
               });
 
               server.log.info(
-                `Monitored site (${monitor.label}) is currently ${
+                `Monitor "${monitor.label}" is currently ${
                   report.success ? 'up!' : 'down!'
                 }`
               );
@@ -88,7 +89,7 @@ async function uptimePlugin(server, _opts) {
               //   if (!report.success) {
               //     server.notify(
               //       monitor.user,
-              //       `Your monitored site (${monitor.label}) is currently down.`
+              //       `Monitor "${monitor.label}" is currently down.`
               //     );
               //   }
             } catch (err) {
@@ -102,7 +103,7 @@ async function uptimePlugin(server, _opts) {
     );
 
     const job = new SimpleIntervalJob(
-      { minutes: 1, runImmediately: true },
+      { seconds: monitor.checkInterval, runImmediately: true },
       task
     );
 
