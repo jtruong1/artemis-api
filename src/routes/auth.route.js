@@ -2,16 +2,16 @@ const {
   registerHandler,
   loginHandler,
   getProfileHandler,
-} = require('./auth.controller');
+} = require('../controllers/auth.controller');
 const {
   registerSchema,
   registerResponseSchema,
   loginSchema,
   loginResponseSchema,
   profileResponseSchema,
-} = require('./auth.schema');
+} = require('../schemas/auth.schema');
 
-async function authRoutes(server, opts) {
+async function authRoutes(server, _opts) {
   server.post(
     '/register',
     {
@@ -53,3 +53,5 @@ async function authRoutes(server, opts) {
 }
 
 module.exports = authRoutes;
+
+module.exports.autoPrefix = '/auth';

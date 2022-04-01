@@ -1,5 +1,5 @@
-const { createUser, getUserByEmail } = require('../users/users.service');
-const { hashPassword, comparePassword } = require('../../utils/password');
+const { createUser, getUserByEmail } = require('../services/users.service');
+const { hashPassword, comparePassword } = require('../utils/hash.util');
 
 async function registerHandler(req, res) {
   const { password, ...input } = req.body;
@@ -12,7 +12,7 @@ async function registerHandler(req, res) {
       ...input,
     });
 
-    return res.code(201).send(user);
+    res.code(201).send(user);
   } catch (err) {
     throw this.httpErrors.badRequest(err);
   }

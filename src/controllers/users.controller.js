@@ -1,4 +1,4 @@
-const { getAllUsers, getUserById } = require('./users.service');
+const { getAllUsers, getUserById } = require('../services/users.service');
 
 async function getAllUsersHandler(req, res) {
   return await getAllUsers();

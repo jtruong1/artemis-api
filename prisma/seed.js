@@ -1,5 +1,5 @@
-const prisma = require('../src/utils/prisma');
-const { hashPassword } = require('../src/utils/password');
+const prisma = require('../src/utils/prisma.util');
+const { hashPassword } = require('../src/utils/hash.util');
 
 const main = async () => {
   await prisma.user.upsert({

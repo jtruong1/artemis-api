@@ -4,15 +4,15 @@ const {
   getSingleSiteHandler,
   updateSiteHandler,
   deleteSiteHandler,
-} = require('./sites.controller');
+} = require('../controllers/sites.controller');
 const {
   addSiteSchema,
   updateSiteSchema,
   siteResponseSchema,
   sitesResponseSchema,
-} = require('./sites.schema');
+} = require('../schemas/sites.schema');
 
-async function siteRoutes(server, opts) {
+async function siteRoutes(server, _opts) {
   server.post(
     '/',
     {
@@ -82,3 +82,5 @@ async function siteRoutes(server, opts) {
 }
 
 module.exports = siteRoutes;
+
+module.exports.autoPrefix = '/sites';

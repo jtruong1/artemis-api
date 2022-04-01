@@ -5,7 +5,7 @@ const {
   getSingleSite,
   updateSite,
   deleteSite,
-} = require('./sites.service');
+} = require('../services/sites.service');
 
 async function addSiteHandler(req, res) {
   const { url } = req.body;

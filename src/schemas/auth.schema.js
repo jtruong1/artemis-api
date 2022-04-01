@@ -1,5 +1,5 @@
 const S = require('fluent-json-schema');
-const { userBaseSchema, userSchema } = require('../users/users.schema');
+const { userBaseSchema, userSchema } = require('./users.schema');
 
 const registerSchema = userBaseSchema;
 

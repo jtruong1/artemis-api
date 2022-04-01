@@ -1,4 +1,4 @@
-const prisma = require('../../utils/prisma');
+const prisma = require('../utils/prisma.util');
 
 async function createUser(data) {
   return prisma.user.create({

@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
-const config = require('../utils/config');
+const securityConfig = require('../configs/security.config');
 
 function hashPassword(str) {
-  return bcrypt.hash(str, config.hash.saltRounds);
+  return bcrypt.hash(str, securityConfig.hash.saltRounds);
 }
 
 function comparePassword(str, hash) {

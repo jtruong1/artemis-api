@@ -1,9 +1,9 @@
 const fp = require('fastify-plugin');
 const nodemailerPlugin = require('fastify-nodemailer');
-const config = require('../../utils/config');
+const mailConfig = require('../../configs/mail.config');
 
 async function mailPlugin(server, opts) {
-  const { fromAddress, fromName, ...options } = config.mail;
+  const { fromAddress, fromName, ...options } = mailConfig;
 
   server.register(nodemailerPlugin, {
     ...options,

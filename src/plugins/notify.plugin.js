@@ -1,11 +1,11 @@
 const fp = require('fastify-plugin');
-const config = require('../utils/config');
+const mailConfig = require('../configs/mail.config');
 
 async function notifyPlugin(server, opts) {
   const notify = (user, message) => {
     server.nodemailer.sendMail(
       {
-        from: `${config.mail.fromName} <${config.mail.fromAddress}>`,
+        from: `${mailConfig.fromName} <${mailConfig.fromAddress}>`,
         to: user.email,
         subject: 'One of your sites is down!',
         text: message,

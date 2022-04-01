@@ -1,6 +1,6 @@
 const fp = require('fastify-plugin');
 const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
-const prisma = require('../../utils/prisma');
+const prisma = require('../../utils/prisma.util');
 
 async function uptimePlugin(server, opts) {
   const sites = await prisma.site.findMany({
