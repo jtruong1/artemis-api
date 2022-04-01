@@ -11,8 +11,8 @@ const parseCertificate = ({ socket }) => {
 
   return {
     valid: socket.authorized,
-    valid_from: new Date(valid_from).toUTCString(),
-    valid_to: validTo.toUTCString(),
+    valid_from: Date.parse(valid_from),
+    valid_to: validTo.getTime(),
     valid_days: differenceInDays(validTo, new Date()),
   };
 };
