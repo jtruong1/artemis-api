@@ -1,3 +1,5 @@
+const { differenceInDays } = require('date-fns');
+
 const parseCertificate = ({ socket }) => {
   const { subjectaltname, valid_from, valid_to } = socket.getPeerCertificate();
 
@@ -5,13 +7,13 @@ const parseCertificate = ({ socket }) => {
     return { valid: false };
   }
 
-  const validTo = Date.parse(valid_to);
+  const validTo = new Date(valid_to);
 
   return {
     valid: socket.authorized,
-    valid_from: Date.parse(valid_from),
-    valid_to: validTo,
-    valid_days: Math.round((validTo - Date.now()) / (1000 * 60 * 60 * 24)),
+    valid_from: new Date(valid_from).toUTCString(),
+    valid_to: validTo.toUTCString(),
+    valid_days: differenceInDays(validTo, new Date()),
   };
 };
 

@@ -1,5 +1,6 @@
 const fp = require('fastify-plugin');
 const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
+const { differenceInDays } = require('date-fns');
 const prisma = require('../../utils/prisma.util');
 const { parseCertificate } = require('../../utils/certificate.util');
 
@@ -46,11 +47,6 @@ async function uptimePlugin(server, _opts) {
             };
           })
           .then(async () => {
-            report = {
-              ...report,
-              updatedAt: new Date(),
-            };
-
             try {
               const reports = await prisma.monitor
                 .findUnique({
@@ -68,7 +64,10 @@ async function uptimePlugin(server, _opts) {
               const latestReport = reports[reports.length - 1];
 
               const shouldUpdateReport =
-                report.success && latestReport && latestReport.success;
+                report.success &&
+                latestReport &&
+                latestReport.success &&
+                differenceInDays(new Date(), latestReport.createdAt) <= 0;
 
               await prisma.monitor.update({
                 where: {
