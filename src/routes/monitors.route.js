@@ -1,30 +1,30 @@
 const {
-  addSiteHandler,
-  getAllSitesHandler,
-  getSingleSiteHandler,
-  updateSiteHandler,
-  deleteSiteHandler,
-} = require('../controllers/sites.controller');
+  createMonitorHandler,
+  getAllMonitorsHandler,
+  getSingleMonitorHandler,
+  updateMonitorHandler,
+  deleteMonitorHandler,
+} = require('../controllers/monitors.controller');
 const {
-  addSiteSchema,
-  updateSiteSchema,
-  siteResponseSchema,
-  sitesResponseSchema,
-} = require('../schemas/sites.schema');
+  createMonitorSchema,
+  updateMonitorSchema,
+  monitorResponseSchema,
+  monitorsResponseSchema,
+} = require('../schemas/monitors.schema');
 
 async function siteRoutes(server, _opts) {
   server.post(
     '/',
     {
       schema: {
-        body: addSiteSchema,
+        body: createMonitorSchema,
         response: {
-          201: siteResponseSchema,
+          201: monitorResponseSchema,
         },
       },
       onRequest: [server.authenticate],
     },
-    addSiteHandler
+    createMonitorHandler
   );
 
   server.get(
@@ -32,12 +32,12 @@ async function siteRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: sitesResponseSchema,
+          200: monitorsResponseSchema,
         },
       },
       onRequest: [server.authenticate],
     },
-    getAllSitesHandler
+    getAllMonitorsHandler
   );
 
   server.get(
@@ -45,26 +45,26 @@ async function siteRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: siteResponseSchema,
+          200: monitorResponseSchema,
         },
       },
       onRequest: [server.authenticate],
     },
-    getSingleSiteHandler
+    getSingleMonitorHandler
   );
 
   server.put(
     '/:id',
     {
       schema: {
-        body: updateSiteSchema,
+        body: updateMonitorSchema,
         response: {
-          200: siteResponseSchema,
+          200: monitorResponseSchema,
         },
       },
       onRequest: [server.authenticate],
     },
-    updateSiteHandler
+    updateMonitorHandler
   );
 
   server.delete(
@@ -72,15 +72,15 @@ async function siteRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: siteResponseSchema,
+          200: monitorResponseSchema,
         },
       },
       onRequest: [server.authenticate],
     },
-    deleteSiteHandler
+    deleteMonitorHandler
   );
 }
 
 module.exports = siteRoutes;
 
-module.exports.autoPrefix = '/sites';
+module.exports.autoPrefix = '/monitors';

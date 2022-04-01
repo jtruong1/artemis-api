@@ -3,31 +3,25 @@ const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const prisma = require('../../utils/prisma.util');
 
 async function uptimePlugin(server, _opts) {
-  const sites = await prisma.site.findMany({
+  const monitors = await prisma.monitor.findMany({
     where: {
-      monitors: {
-        some: {
-          slug: 'uptime',
-          enabled: true,
-        },
+      NOT: {
+        status: 'inactive',
       },
     },
     include: {
       user: true,
-      monitors: true,
     },
   });
 
-  sites.forEach((site) => {
-    const monitor = site.monitors.find((monitor) => monitor.slug === 'uptime');
-
+  monitors.forEach((monitor) => {
     const task = new AsyncTask(
-      `monitor site ${site.id} uptime`,
+      `monitor ${monitor.id} uptime`,
       () => {
         let report = {};
 
         return server.axios
-          .get(site.url)
+          .get(monitor.url)
           .then((res) => {
             report = {
               success: true,
@@ -70,6 +64,7 @@ async function uptimePlugin(server, _opts) {
                   id: Number(monitor.id),
                 },
                 data: {
+                  status: report.success ? 'up' : 'down',
                   reports: {
                     upsert: {
                       create: report,
@@ -85,15 +80,15 @@ async function uptimePlugin(server, _opts) {
               });
 
               server.log.info(
-                `Site ${site.id} (${site.label}) is currently ${
+                `Monitored site (${monitor.label}) is currently ${
                   report.success ? 'up!' : 'down!'
                 }`
               );
 
               //   if (!report.success) {
               //     server.notify(
-              //       site.user,
-              //       `Your site ${site.label} is currently down.`
+              //       monitor.user,
+              //       `Your monitored site (${monitor.label}) is currently down.`
               //     );
               //   }
             } catch (err) {
@@ -108,8 +103,7 @@ async function uptimePlugin(server, _opts) {
 
     const job = new SimpleIntervalJob(
       { minutes: 1, runImmediately: true },
-      task,
-      `uptime_${site.id}`
+      task
     );
 
     server.scheduler.addSimpleIntervalJob(job);

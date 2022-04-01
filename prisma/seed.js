@@ -9,16 +9,10 @@ const main = async () => {
       email: 'john@example.com',
       name: 'John Doe',
       password: await hashPassword('password'),
-      sites: {
+      monitors: {
         create: {
           url: 'https://www.google.com/',
           label: 'google.com',
-          monitors: {
-            create: {
-              slug: 'uptime',
-              name: 'Uptime',
-            },
-          },
         },
       },
     },
