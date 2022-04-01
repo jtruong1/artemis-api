@@ -2,7 +2,7 @@ const fp = require('fastify-plugin');
 const jwtPlugin = require('fastify-jwt');
 const appConfig = require('../configs/app.config');
 
-async function authPlugin(server, opts) {
+async function authPlugin(server, _opts) {
   server.register(jwtPlugin, {
     secret: appConfig.key,
   });

@@ -5,13 +5,10 @@ const path = require('path');
 const createServer = () => {
   const server = fastify({
     logger: {
-      prettyPrint:
-        process.env.NODE_ENV !== 'production'
-          ? {
-              translateTime: 'HH:MM:ss Z',
-              ignore: 'pid,hostname',
-            }
-          : false,
+      prettyPrint: {
+        translateTime: 'HH:MM:ss Z',
+        ignore: 'pid,hostname',
+      },
     },
   });
 

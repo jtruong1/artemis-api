@@ -1,7 +1,7 @@
 const fp = require('fastify-plugin');
 const mailConfig = require('../configs/mail.config');
 
-async function notifyPlugin(server, opts) {
+async function notifyPlugin(server, _opts) {
   const notify = (user, message) => {
     server.nodemailer.sendMail(
       {

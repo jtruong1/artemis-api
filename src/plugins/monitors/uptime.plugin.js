@@ -2,7 +2,7 @@ const fp = require('fastify-plugin');
 const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const prisma = require('../../utils/prisma.util');
 
-async function uptimePlugin(server, opts) {
+async function uptimePlugin(server, _opts) {
   const sites = await prisma.site.findMany({
     where: {
       monitors: {
@@ -85,15 +85,17 @@ async function uptimePlugin(server, opts) {
               });
 
               server.log.info(
-                `${site.label} is ${report.success ? 'up' : 'down'}`
+                `Site ${site.id} (${site.label}) is currently ${
+                  report.success ? 'up!' : 'down!'
+                }`
               );
 
-              if (!report.success) {
-                server.notify(
-                  site.user,
-                  `Your site ${site.label} is currently down.`
-                );
-              }
+              //   if (!report.success) {
+              //     server.notify(
+              //       site.user,
+              //       `Your site ${site.label} is currently down.`
+              //     );
+              //   }
             } catch (err) {
               server.log.error(err);
             }

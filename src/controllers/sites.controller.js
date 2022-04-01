@@ -18,7 +18,7 @@ async function addSiteHandler(req, res) {
       ...parsedUrl,
     });
 
-    return res.code(201).send(site);
+    res.code(201).send(site);
   } catch (err) {
     throw this.httpErrors.badRequest(err);
   }

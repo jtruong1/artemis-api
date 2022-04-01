@@ -1,8 +1,8 @@
 const fp = require('fastify-plugin');
 const axios = require('axios');
 
-async function axiosPlugin(server, opts) {
-  const instance = axios.create(opts);
+async function axiosPlugin(server, _opts) {
+  const instance = axios.create();
 
   instance.interceptors.request.use(
     (config) => {
