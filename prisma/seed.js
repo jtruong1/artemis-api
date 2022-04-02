@@ -13,6 +13,18 @@ const main = async () => {
         create: {
           url: 'https://www.google.com/',
           label: 'google.com',
+          checks: {
+            create: [
+              {
+                type: 'uptime',
+                label: 'Uptime',
+              },
+              {
+                type: 'certificate',
+                label: 'Certificate',
+              },
+            ],
+          },
         },
       },
     },

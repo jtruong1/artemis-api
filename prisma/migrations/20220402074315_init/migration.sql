@@ -17,9 +17,6 @@ CREATE TABLE `Monitor` (
     `user_id` INTEGER NOT NULL,
     `url` VARCHAR(191) NOT NULL,
     `label` VARCHAR(191) NOT NULL,
-    `type` ENUM('uptime') NOT NULL DEFAULT 'uptime',
-    `check_interval` INTEGER NOT NULL DEFAULT 60,
-    `status` ENUM('pending', 'paused', 'up', 'down') NOT NULL DEFAULT 'pending',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
@@ -27,30 +24,39 @@ CREATE TABLE `Monitor` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Report` (
+CREATE TABLE `Check` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `success` BOOLEAN NOT NULL,
-    `data` JSON NULL,
+    `monitor_id` INTEGER NOT NULL,
+    `type` ENUM('uptime', 'certificate') NOT NULL,
+    `label` VARCHAR(191) NOT NULL,
+    `status` ENUM('pending', 'up', 'down') NOT NULL DEFAULT 'pending',
+    `interval` INTEGER NOT NULL DEFAULT 60,
+    `enabled` BOOLEAN NOT NULL DEFAULT true,
+    `metadata` JSON NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
+    `checked_at` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_MonitorToReport` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
+CREATE TABLE `Incident` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `check_id` INTEGER NOT NULL,
+    `reason` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `resolved_at` DATETIME(3) NULL,
 
-    UNIQUE INDEX `_MonitorToReport_AB_unique`(`A`, `B`),
-    INDEX `_MonitorToReport_B_index`(`B`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `Monitor` ADD CONSTRAINT `Monitor_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_MonitorToReport` ADD FOREIGN KEY (`A`) REFERENCES `Monitor`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Check` ADD CONSTRAINT `Check_monitor_id_fkey` FOREIGN KEY (`monitor_id`) REFERENCES `Monitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_MonitorToReport` ADD FOREIGN KEY (`B`) REFERENCES `Report`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Incident` ADD CONSTRAINT `Incident_check_id_fkey` FOREIGN KEY (`check_id`) REFERENCES `Check`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

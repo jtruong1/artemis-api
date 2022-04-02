@@ -1,18 +1,18 @@
 const { differenceInDays } = require('date-fns');
 
-const parseCertificate = ({ socket }) => {
-  const { subjectaltname, valid_from, valid_to } = socket.getPeerCertificate();
+const parseCertificate = (certificate) => {
+  const { issuer, subjectaltname, valid_from, valid_to } = certificate;
 
-  if (!subjectaltname || !valid_from || !valid_to) {
-    return { valid: false };
+  if (!issuer || !subjectaltname || !valid_from || !valid_to) {
+    return null;
   }
 
   const validTo = new Date(valid_to);
 
   return {
-    valid: socket.authorized,
-    valid_from: Date.parse(valid_from),
-    valid_to: validTo.getTime(),
+    issuer: issuer.O,
+    valid_from: new Date(valid_from).toISOString(),
+    valid_to: validTo.toISOString(),
     valid_days: differenceInDays(validTo, new Date()),
   };
 };

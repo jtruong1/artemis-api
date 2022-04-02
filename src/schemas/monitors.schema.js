@@ -3,10 +3,7 @@ const S = require('fluent-json-schema');
 const monitorBaseSchema = S.object()
   .additionalProperties(false)
   .prop('url', S.string().format(S.FORMATS.URL).required())
-  .prop('label', S.string().format(S.FORMATS.HOSTNAME))
-  .prop('type', S.string())
-  .prop('checkInterval', S.integer())
-  .prop('status', S.string());
+  .prop('label', S.string().format(S.FORMATS.HOSTNAME));
 
 const monitorSchema = S.object()
   .prop('id', S.integer())

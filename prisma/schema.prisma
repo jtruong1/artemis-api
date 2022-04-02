@@ -23,30 +23,44 @@ model Monitor {
   userId        Int      @map("user_id")
   url           String
   label         String
-  type          Type     @default(uptime)
-  checkInterval Int      @default(60) @map("check_interval")
-  status        Status   @default(pending)
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
-  reports       Report[]
+  checks        Check[]
 }
 
-model Report {
-  id        Int       @id @default(autoincrement())
-  success   Boolean
-  data      Json?
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  monitors  Monitor[]
+model Check {
+  id        Int        @id @default(autoincrement())
+  monitor   Monitor    @relation(fields: [monitorId], references: [id])
+  monitorId Int        @map("monitor_id")
+  type      Type
+  label     String
+  status    Status     @default(pending)
+  interval  Int        @default(60)
+  enabled   Boolean    @default(true)
+  metadata  Json?
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  checkedAt DateTime?  @map("checked_at")
+  incidents Incident[]
+}
+
+model Incident {
+  id         Int       @id @default(autoincrement())
+  check      Check     @relation(fields: [checkId], references: [id])
+  checkId    Int       @map("check_id")
+  reason     String
+  startedAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  resolvedAt DateTime? @map("resolved_at")
 }
 
 enum Type {
   uptime
+  certificate
 }
 
 enum Status {
   pending
-  paused
   up
   down
 }
