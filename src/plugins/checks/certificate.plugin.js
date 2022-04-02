@@ -49,7 +49,6 @@ async function certificatePlugin(server, _opts) {
             }
           })
           .catch((err) => {
-            console.log(err);
             report = {
               status: 'down',
               metadata: {

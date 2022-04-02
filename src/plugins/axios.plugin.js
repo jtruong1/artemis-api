@@ -1,8 +1,13 @@
 const fp = require('fastify-plugin');
 const axios = require('axios');
+const https = require('https');
 
 async function axiosPlugin(server, _opts) {
-  const instance = axios.create();
+  const instance = axios.create({
+    httpsAgent: new https.Agent({
+      maxCachedSessions: 0,
+    }),
+  });
 
   instance.interceptors.request.use(
     (config) => {
