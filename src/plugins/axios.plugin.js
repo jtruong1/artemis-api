@@ -4,6 +4,11 @@ const https = require('https');
 
 async function axiosPlugin(server, _opts) {
   const instance = axios.create({
+    headers: {
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+      Expires: '0',
+    },
     httpsAgent: new https.Agent({
       maxCachedSessions: 0,
     }),
