@@ -24,7 +24,9 @@ async function certificatePlugin(server, _opts) {
     const task = new AsyncTask(
       `check monitor ${monitor.id} certificate`,
       () => {
-        let report = {};
+        let data = {
+          checkedAt: new Date(),
+        };
 
         return server.axios
           .get(monitor.url)
@@ -33,68 +35,38 @@ async function certificatePlugin(server, _opts) {
             const certificate = parseCertificate(socket.getPeerCertificate());
 
             if (socket.authorized) {
-              report = {
+              data = {
                 status: 'up',
                 metadata: {
                   ...certificate,
                 },
+                ...data,
               };
             } else {
-              report = {
+              data = {
                 status: 'down',
                 metadata: {
-                  error: 'Failed to verify certificate.',
+                  error: 'Failed to validate certificate',
                 },
+                ...data,
               };
             }
           })
-          .catch((err) => {
-            report = {
+          .catch(() => {
+            data = {
               status: 'down',
-              metadata: {
-                error: 'Failed to fetch certificate.',
-              },
+              ...data,
             };
           })
           .then(async () => {
             try {
-              if (report.status === 'down') {
-                const incidents = await prisma.check
-                  .findUnique({
-                    where: {
-                      id: check.id,
-                    },
-                  })
-                  .incidents({
-                    where: {
-                      resolvedAt: null,
-                    },
-                  });
-
-                if (incidents.length === 0) {
-                  report = {
-                    ...report,
-                    incidents: {
-                      create: {
-                        reason: report.metadata.error,
-                      },
-                    },
-                  };
-                }
-              }
-
               await prisma.check.update({
-                where: {
-                  id: check.id,
-                },
-                data: {
-                  ...report,
-                  checkedAt: new Date(),
-                },
+                where: { id: check.id },
+                data,
               });
 
               server.log.info(
-                `[certificate] monitor ${monitor.id} is ${report.status}`
+                `[certificate] monitor ${monitor.id} is ${data.status}`
               );
             } catch (err) {
               server.log.error(err);

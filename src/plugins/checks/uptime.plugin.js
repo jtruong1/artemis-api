@@ -1,6 +1,7 @@
 const fp = require('fastify-plugin');
 const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const prisma = require('../../utils/prisma.util');
+const { handleErrorResponse } = require('../../utils/response.util');
 
 async function uptimePlugin(server, _opts) {
   const checks = await prisma.check.findMany({
@@ -23,70 +24,44 @@ async function uptimePlugin(server, _opts) {
     const task = new AsyncTask(
       `check monitor ${monitor.id} uptime`,
       () => {
-        let report = {};
+        let data = {
+          checkedAt: new Date(),
+        };
 
         return server.axios
           .get(monitor.url)
           .then((res) => {
-            report = {
+            data = {
               status: 'up',
               metadata: {
                 status_code: res.status,
                 response_time: res.duration,
               },
+              ...data,
             };
           })
           .catch((err) => {
-            report = {
-              status: 'down',
-              metadata: {
-                error: err.message,
-              },
-            };
+            try {
+              handleErrorResponse(err);
+            } catch (e) {
+              data = {
+                status: 'down',
+                metadata: {
+                  error: e.message,
+                },
+                ...data,
+              };
+            }
           })
           .then(async () => {
             try {
-              if (report.status === 'down') {
-                const incidents = await prisma.check
-                  .findUnique({
-                    where: {
-                      id: check.id,
-                    },
-                  })
-                  .incidents({
-                    where: {
-                      resolvedAt: null,
-                    },
-                    //   orderBy: {
-                    //     id: 'desc',
-                    //   },
-                    //   take: 1,
-                  });
-
-                if (incidents.length === 0) {
-                  report = {
-                    ...report,
-                    incidents: {
-                      create: {
-                        reason: report.metadata.error,
-                      },
-                    },
-                  };
-                }
-              }
-
               await prisma.check.update({
-                where: {
-                  id: check.id,
-                },
-                data: {
-                  ...report,
-                  checkedAt: new Date(),
-                },
+                where: { id: check.id },
+                data,
               });
 
               server.log.info(
-                `[uptime] monitor ${monitor.id} is ${report.status}`
+                `[uptime] monitor ${monitor.id} is ${data.status}`
               );
             } catch (err) {
               server.log.error(err);

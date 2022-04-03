@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt');
 const securityConfig = require('../configs/security.config');
 
-function hashPassword(str) {
+const hashPassword = (str) => {
   return bcrypt.hash(str, securityConfig.hash.saltRounds);
-}
+};
 
-function comparePassword(str, hash) {
+const comparePassword = (str, hash) => {
   return bcrypt.compare(str, hash);
-}
+};
 
 module.exports = { hashPassword, comparePassword };
