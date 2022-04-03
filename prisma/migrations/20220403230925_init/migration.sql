@@ -30,7 +30,7 @@ CREATE TABLE `Check` (
     `type` ENUM('uptime', 'certificate') NOT NULL,
     `label` VARCHAR(191) NOT NULL,
     `status` ENUM('pending', 'up', 'down') NOT NULL DEFAULT 'pending',
-    `interval` INTEGER NOT NULL DEFAULT 60,
+    `interval` INTEGER NOT NULL,
     `enabled` BOOLEAN NOT NULL DEFAULT true,
     `metadata` JSON NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -56,7 +56,7 @@ CREATE TABLE `Incident` (
 ALTER TABLE `Monitor` ADD CONSTRAINT `Monitor_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Check` ADD CONSTRAINT `Check_monitor_id_fkey` FOREIGN KEY (`monitor_id`) REFERENCES `Monitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Check` ADD CONSTRAINT `Check_monitor_id_fkey` FOREIGN KEY (`monitor_id`) REFERENCES `Monitor`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Incident` ADD CONSTRAINT `Incident_check_id_fkey` FOREIGN KEY (`check_id`) REFERENCES `Check`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Incident` ADD CONSTRAINT `Incident_check_id_fkey` FOREIGN KEY (`check_id`) REFERENCES `Check`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

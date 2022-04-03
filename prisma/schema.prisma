@@ -30,7 +30,7 @@ model Monitor {
 
 model Check {
   id        Int        @id @default(autoincrement())
-  monitor   Monitor    @relation(fields: [monitorId], references: [id])
+  monitor   Monitor    @relation(fields: [monitorId], references: [id], onDelete: Cascade)
   monitorId Int        @map("monitor_id")
   type      Type
   label     String
@@ -46,7 +46,7 @@ model Check {
 
 model Incident {
   id         Int       @id @default(autoincrement())
-  check      Check     @relation(fields: [checkId], references: [id])
+  check      Check     @relation(fields: [checkId], references: [id], onDelete: Cascade)
   checkId    Int       @map("check_id")
   reason     String
   startedAt  DateTime  @default(now()) @map("created_at")

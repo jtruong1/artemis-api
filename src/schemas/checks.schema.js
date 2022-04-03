@@ -29,13 +29,13 @@ const checkBaseSchema = S.object()
   .prop('status', S.enum(Object.values(STATUSES)).default(STATUSES.PENDING))
   .prop('interval', S.integer().required())
   .prop('enabled', S.boolean().default(true))
-  .prop('metadata', metadataSchema);
+  .prop('metadata', S.anyOf([metadataSchema, S.null()]));
 
 const checkSchema = S.object()
   .prop('id', S.integer())
   // .prop('createdAt', S.string())
   // .prop('updatedAt', S.string())
-  .prop('checkedAt', S.string())
+  .prop('checkedAt', S.string().raw({ nullable: true }))
   .extend(checkBaseSchema);
 
 const checksSchema = S.array().items(checkSchema);
