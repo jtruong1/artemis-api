@@ -6,20 +6,20 @@ const {
   deleteMonitorHandler,
 } = require('../controllers/monitors.controller');
 const {
+  monitorSchema,
+  monitorsSchema,
   createMonitorSchema,
   updateMonitorSchema,
-  monitorResponseSchema,
-  monitorsResponseSchema,
 } = require('../schemas/monitors.schema');
 
-async function siteRoutes(server, _opts) {
+async function monitorRoutes(server, _opts) {
   server.post(
     '/',
     {
       schema: {
         body: createMonitorSchema,
         response: {
-          201: monitorResponseSchema,
+          201: monitorSchema,
         },
       },
       onRequest: [server.authenticate],
@@ -32,7 +32,7 @@ async function siteRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: monitorsResponseSchema,
+          200: monitorsSchema,
         },
       },
       onRequest: [server.authenticate],
@@ -45,7 +45,7 @@ async function siteRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: monitorResponseSchema,
+          200: monitorSchema,
         },
       },
       onRequest: [server.authenticate],
@@ -59,7 +59,7 @@ async function siteRoutes(server, _opts) {
       schema: {
         body: updateMonitorSchema,
         response: {
-          200: monitorResponseSchema,
+          200: monitorSchema,
         },
       },
       onRequest: [server.authenticate],
@@ -72,7 +72,7 @@ async function siteRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: monitorResponseSchema,
+          200: monitorSchema,
         },
       },
       onRequest: [server.authenticate],
@@ -81,6 +81,6 @@ async function siteRoutes(server, _opts) {
   );
 }
 
-module.exports = siteRoutes;
+module.exports = monitorRoutes;
 
 module.exports.autoPrefix = '/monitors';

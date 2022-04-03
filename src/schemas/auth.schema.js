@@ -9,7 +9,7 @@ const loginSchema = userBaseSchema.without('name');
 
 const loginResponseSchema = S.object().prop('accessToken', S.string());
 
-const profileResponseSchema = S.object()
+const profileSchema = S.object()
   .prop('sub', S.integer())
   .prop('name', S.string());
 
@@ -18,5 +18,5 @@ module.exports = {
   registerResponseSchema,
   loginSchema,
   loginResponseSchema,
-  profileResponseSchema,
+  profileSchema,
 };

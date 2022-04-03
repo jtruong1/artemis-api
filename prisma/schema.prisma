@@ -18,14 +18,14 @@ model User {
 }
 
 model Monitor {
-  id            Int      @id @default(autoincrement())
-  user          User     @relation(fields: [userId], references: [id])
-  userId        Int      @map("user_id")
-  url           String
-  label         String
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-  checks        Check[]
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  url       String
+  label     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  checks    Check[]
 }
 
 model Check {
@@ -35,7 +35,7 @@ model Check {
   type      Type
   label     String
   status    Status     @default(pending)
-  interval  Int        @default(60)
+  interval  Int
   enabled   Boolean    @default(true)
   metadata  Json?
   createdAt DateTime   @default(now()) @map("created_at")

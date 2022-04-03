@@ -8,7 +8,7 @@ const {
   registerResponseSchema,
   loginSchema,
   loginResponseSchema,
-  profileResponseSchema,
+  profileSchema,
 } = require('../schemas/auth.schema');
 
 async function authRoutes(server, _opts) {
@@ -43,7 +43,7 @@ async function authRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: profileResponseSchema,
+          200: profileSchema,
         },
       },
       onRequest: [server.authenticate],

@@ -1,7 +1,28 @@
 const prisma = require('../utils/prisma.util');
 
 async function createMonitor(data) {
-  return prisma.monitor.create({ data });
+  return prisma.monitor.create({
+    data: {
+      ...data,
+      checks: {
+        create: [
+          {
+            type: 'uptime',
+            label: 'Uptime',
+            interval: 60,
+          },
+          {
+            type: 'certificate',
+            label: 'Certificate',
+            interval: 300,
+          },
+        ],
+      },
+    },
+    include: {
+      checks: true,
+    },
+  });
 }
 
 async function getAllMonitors(userId) {
@@ -11,6 +32,9 @@ async function getAllMonitors(userId) {
         id: Number(userId),
       },
     },
+    include: {
+      checks: true,
+    },
   });
 }
 
@@ -18,6 +42,9 @@ async function getSingleMonitor(id) {
   return prisma.monitor.findUnique({
     where: {
       id: Number(id),
+    },
+    include: {
+      checks: true,
     },
   });
 }
@@ -27,6 +54,9 @@ async function updateMonitor(id, data) {
     where: {
       id: Number(id),
     },
+    include: {
+      checks: true,
+    },
     data,
   });
 }
@@ -35,6 +65,9 @@ async function deleteMonitor(id) {
   return prisma.monitor.delete({
     where: {
       id: Number(id),
+    },
+    include: {
+      checks: true,
     },
   });
 }

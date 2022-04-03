@@ -1,4 +1,5 @@
 const S = require('fluent-json-schema');
+const { checksSchema } = require('./checks.schema');
 
 const monitorBaseSchema = S.object()
   .additionalProperties(false)
@@ -7,21 +8,20 @@ const monitorBaseSchema = S.object()
 
 const monitorSchema = S.object()
   .prop('id', S.integer())
-  .prop('createdAt', S.string())
-  .prop('updatedAt', S.string())
+  // .prop('createdAt', S.string())
+  // .prop('updatedAt', S.string())
+  .prop('checks', checksSchema)
   .extend(monitorBaseSchema);
+
+const monitorsSchema = S.array().items(monitorSchema);
 
 const createMonitorSchema = monitorBaseSchema;
 
 const updateMonitorSchema = monitorBaseSchema;
 
-const monitorResponseSchema = monitorSchema;
-
-const monitorsResponseSchema = S.array().items(monitorSchema);
-
 module.exports = {
+  monitorSchema,
+  monitorsSchema,
   createMonitorSchema,
   updateMonitorSchema,
-  monitorResponseSchema,
-  monitorsResponseSchema,
 };

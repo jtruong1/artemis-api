@@ -18,10 +18,12 @@ const main = async () => {
               {
                 type: 'uptime',
                 label: 'Uptime',
+                interval: 60,
               },
               {
                 type: 'certificate',
                 label: 'Certificate',
+                interval: 300,
               },
             ],
           },
