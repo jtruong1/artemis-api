@@ -7,7 +7,7 @@ const registerResponseSchema = userSchema;
 
 const loginSchema = userBaseSchema.without('name');
 
-const loginResponseSchema = S.object().prop('accessToken', S.string());
+const loginResponseSchema = S.object().prop('token', S.string());
 
 const profileSchema = S.object()
   .prop('sub', S.integer())

@@ -8,8 +8,8 @@ async function registerHandler(req, res) {
 
   try {
     const user = await createUser({
-      password: hashedPassword,
       ...input,
+      password: hashedPassword,
     });
 
     res.code(201).send(user);
@@ -37,9 +37,16 @@ async function loginHandler(req, res) {
     );
   }
 
-  return {
-    accessToken: this.jwt.sign({ sub: user.id, name: user.name }),
-  };
+  const token = await res.jwtSign({
+    sub: user.id,
+    name: user.name,
+  });
+
+  res.setCookie('token', token, {
+    httpOnly: true,
+  });
+
+  return { token };
 }
 
 async function getProfileHandler(req, res) {

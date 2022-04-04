@@ -10,7 +10,7 @@ const parseCertificate = (certificate) => {
   const validTo = new Date(valid_to);
 
   return {
-    issuer: issuer.O,
+    issuer: issuer.CN,
     valid_from: new Date(valid_from).toISOString(),
     valid_to: validTo.toISOString(),
     valid_days: differenceInDays(validTo, new Date()),

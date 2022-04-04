@@ -15,6 +15,7 @@ const createServer = () => {
   server
     .register(require('fastify-cors'))
     .register(require('fastify-helmet'))
+    .register(require('fastify-cookie'))
     .register(require('fastify-sensible'))
     .register(require('fastify-schedule'));
 
