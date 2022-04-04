@@ -10,8 +10,9 @@ const loginSchema = userBaseSchema.without('name');
 const loginResponseSchema = S.object().prop('token', S.string());
 
 const profileSchema = S.object()
-  .prop('sub', S.integer())
-  .prop('name', S.string());
+  .prop('id', S.integer())
+  .prop('name', S.string())
+  .prop('email', S.string().format(S.FORMATS.EMAIL));
 
 module.exports = {
   registerSchema,

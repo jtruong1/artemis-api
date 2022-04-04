@@ -14,7 +14,7 @@ async function createMonitorHandler(req, res) {
 
   try {
     const monitor = await createMonitor({
-      userId: req.user.sub,
+      userId: req.user.id,
       ...parsedUrl,
     });
 
@@ -25,7 +25,7 @@ async function createMonitorHandler(req, res) {
 }
 
 async function getAllMonitorsHandler(req, res) {
-  return await getAllMonitors(req.user.sub);
+  return await getAllMonitors(req.user.id);
 }
 
 async function getSingleMonitorHandler(req, res) {
@@ -37,7 +37,7 @@ async function getSingleMonitorHandler(req, res) {
     throw this.httpErrors.notFound();
   }
 
-  if (monitor.userId !== req.user.sub) {
+  if (monitor.userId !== req.user.id) {
     throw this.httpErrors.unauthorized();
   }
 
@@ -54,7 +54,7 @@ async function updateMonitorHandler(req, res) {
     throw this.httpErrors.notFound();
   }
 
-  if (monitor.userId !== req.user.sub) {
+  if (monitor.userId !== req.user.id) {
     throw this.httpErrors.unauthorized();
   }
 
@@ -70,7 +70,7 @@ async function deleteMonitorHandler(req, res) {
     throw this.httpErrors.notFound();
   }
 
-  if (monitor.userId !== req.user.sub) {
+  if (monitor.userId !== req.user.id) {
     throw this.httpErrors.unauthorized();
   }
 

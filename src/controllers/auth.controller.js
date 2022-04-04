@@ -12,7 +12,7 @@ async function registerHandler(req, res) {
       password: hashedPassword,
     });
 
-    res.code(201).send(user);
+    sendToken(user, 201, req, res);
   } catch (err) {
     throw this.httpErrors.badRequest(err);
   }
@@ -37,20 +37,29 @@ async function loginHandler(req, res) {
     );
   }
 
-  const token = await res.jwtSign({
-    sub: user.id,
-    name: user.name,
-  });
-
-  res.setCookie('token', token, {
-    httpOnly: true,
-  });
-
-  return { token };
+  sendToken(user, 200, req, res);
 }
 
 async function getProfileHandler(req, res) {
   return req.user;
+}
+
+async function sendToken(user, code, req, res) {
+  const token = await res.jwtSign({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  });
+
+  res
+    .status(code)
+    .setCookie('token', token, {
+      domain: 'localhost',
+      path: '/',
+      httpOnly: true,
+      sameSite: true,
+    })
+    .send({ token });
 }
 
 module.exports = {
