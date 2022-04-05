@@ -1,6 +1,7 @@
 const fastify = require('fastify');
 const autoloadPlugin = require('fastify-autoload');
 const path = require('path');
+const appConfig = require('./configs/app.config');
 
 const createServer = () => {
   const server = fastify({
@@ -13,11 +14,13 @@ const createServer = () => {
   });
 
   server
+    .register(require('fastify-cookie'), {
+      secret: appConfig.key,
+    })
     .register(require('fastify-cors'))
     .register(require('fastify-helmet'))
-    .register(require('fastify-cookie'))
-    .register(require('fastify-sensible'))
-    .register(require('fastify-schedule'));
+    .register(require('fastify-schedule'))
+    .register(require('fastify-sensible'));
 
   server.get('/', async (req, res) => {
     return { hello: 'world' };
