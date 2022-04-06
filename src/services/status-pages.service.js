@@ -13,7 +13,11 @@ async function createStatusPage(data) {
       },
     },
     include: {
-      monitors: true,
+      monitors: {
+        include: {
+          checks: true,
+        },
+      },
     },
   });
 }
@@ -26,18 +30,26 @@ async function getAllStatusPages(userId) {
       },
     },
     include: {
-      monitors: true,
+      monitors: {
+        include: {
+          checks: true,
+        },
+      },
     },
   });
 }
 
 async function getSingleStatusPage(id) {
+  const where = /[a-z]/i.test(id) ? { slug: id } : { id: Number(id) };
+
   return prisma.statusPage.findUnique({
-    where: {
-      id: Number(id),
-    },
+    where,
     include: {
-      monitors: true,
+      monitors: {
+        include: {
+          checks: true,
+        },
+      },
     },
   });
 }
@@ -50,7 +62,11 @@ async function updateStatusPage(id, data) {
       id: Number(id),
     },
     include: {
-      monitors: true,
+      monitors: {
+        include: {
+          checks: true,
+        },
+      },
     },
     data: {
       ...input,
@@ -68,7 +84,11 @@ async function deleteStatusPage(id) {
       id: Number(id),
     },
     include: {
-      monitors: true,
+      monitors: {
+        include: {
+          checks: true,
+        },
+      },
     },
   });
 }
