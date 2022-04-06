@@ -8,14 +8,15 @@ const {
 } = require('../services/monitors.service');
 
 async function createMonitorHandler(req, res) {
-  const { url } = req.body;
+  const { url, label } = req.body;
 
   const parsedUrl = parseUrl(url);
 
   try {
     const monitor = await createMonitor({
       userId: req.user.id,
-      ...parsedUrl,
+      url: parsedUrl.full,
+      label: label || parsedUrl.short,
     });
 
     res.code(201).send(monitor);
@@ -82,8 +83,8 @@ function parseUrl(url) {
   const domain = extractDomain(q.hostname, { tld: true });
 
   return {
-    url: q.href,
-    label: domain || q.hostname,
+    full: q.href,
+    short: domain || q.hostname,
   };
 }
 
