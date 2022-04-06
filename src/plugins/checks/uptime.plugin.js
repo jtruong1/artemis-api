@@ -81,7 +81,10 @@ async function uptimePlugin(server, _opts) {
     }
   );
 
-  const job = new SimpleIntervalJob({ minutes: 1, runImmediately: true }, task);
+  const job = new SimpleIntervalJob(
+    { seconds: 30, runImmediately: true },
+    task
+  );
 
   server.scheduler.addSimpleIntervalJob(job);
 }
