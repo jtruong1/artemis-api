@@ -54,6 +54,8 @@ async function sendAccessToken(user, code, req, res) {
   res
     .status(code)
     .cookie('token', token, {
+      domain: 'localhost',
+      path: '/',
       // secure: true,
       httpOnly: true,
       sameSite: true,
