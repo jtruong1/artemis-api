@@ -47,7 +47,7 @@ async function getSingleMonitorHandler(req, res) {
 
 async function updateMonitorHandler(req, res) {
   const { id } = req.params;
-  const { url } = req.body;
+  const { url, label } = req.body;
 
   const monitor = await getSingleMonitor(id);
 
@@ -59,7 +59,12 @@ async function updateMonitorHandler(req, res) {
     throw this.httpErrors.unauthorized();
   }
 
-  return await updateMonitor(id, parseUrl(url));
+  const parsedUrl = parseUrl(url);
+
+  return await updateMonitor(id, {
+    url: parsedUrl.full,
+    label: label || parsedUrl.short,
+  });
 }
 
 async function deleteMonitorHandler(req, res) {
