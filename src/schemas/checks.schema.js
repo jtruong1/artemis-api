@@ -33,9 +33,9 @@ const checkBaseSchema = S.object()
 
 const checkSchema = S.object()
   .prop('id', S.integer())
+  .prop('checkedAt', S.string().raw({ nullable: true }))
   // .prop('createdAt', S.string())
   // .prop('updatedAt', S.string())
-  .prop('checkedAt', S.string().raw({ nullable: true }))
   .extend(checkBaseSchema);
 
 const checksSchema = S.array().items(checkSchema);

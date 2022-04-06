@@ -38,9 +38,9 @@ model Check {
   interval  Int
   enabled   Boolean    @default(true)
   metadata  Json?
+  checkedAt DateTime?  @map("checked_at")
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
-  checkedAt DateTime?  @map("checked_at")
   incidents Incident[]
 }
 
@@ -49,9 +49,9 @@ model Incident {
   check      Check     @relation(fields: [checkId], references: [id], onDelete: Cascade)
   checkId    Int       @map("check_id")
   reason     String
+  resolvedAt DateTime? @map("resolved_at")
   startedAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
-  resolvedAt DateTime? @map("resolved_at")
 }
 
 enum Type {
