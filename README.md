@@ -10,13 +10,19 @@ Artemis is an open-source monitoring tool that establishes a single source of tr
    git clone https://github.com/jtruong1/artemis-api.git
    ```
 
-2. Install NPM packages
+2. Copy the environment file
+
+   ```sh
+   cp .env.example .env
+   ```
+
+3. Install NPM packages
 
    ```sh
    npm install
    ```
 
-2. Start the application
+4. Start the application
 
    ```sh
    npm run dev
