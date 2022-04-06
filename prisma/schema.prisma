@@ -8,50 +8,62 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String
-  password  String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  monitors  Monitor[]
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  name        String
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  monitors    Monitor[]
+  statusPages StatusPage[]
 }
 
 model Monitor {
-  id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @map("user_id")
-  url       String
-  label     String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  checks    Check[]
+  id          Int          @id @default(autoincrement())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int
+  url         String
+  label       String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  checks      Check[]
+  statusPages StatusPage[]
 }
 
 model Check {
   id        Int        @id @default(autoincrement())
   monitor   Monitor    @relation(fields: [monitorId], references: [id], onDelete: Cascade)
-  monitorId Int        @map("monitor_id")
+  monitorId Int
   type      Type
   label     String
   status    Status     @default(pending)
   interval  Int
   enabled   Boolean    @default(true)
   metadata  Json?
-  checkedAt DateTime?  @map("checked_at")
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  checkedAt DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   incidents Incident[]
 }
 
 model Incident {
   id         Int       @id @default(autoincrement())
   check      Check     @relation(fields: [checkId], references: [id], onDelete: Cascade)
-  checkId    Int       @map("check_id")
+  checkId    Int
   reason     String
-  resolvedAt DateTime? @map("resolved_at")
-  startedAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model StatusPage {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  slug      String    @unique
+  monitors  Monitor[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 enum Type {
