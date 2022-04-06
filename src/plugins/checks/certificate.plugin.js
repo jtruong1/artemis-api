@@ -38,6 +38,7 @@ async function certificatePlugin(server, _opts) {
               .get(check.monitor.url)
               .then((res) => {
                 const socket = res.request.res.socket;
+
                 const certificate = parseCertificate(
                   socket.getPeerCertificate()
                 );
@@ -57,7 +58,7 @@ async function certificatePlugin(server, _opts) {
               .catch(() => {
                 data = { status: 'down' };
               })
-              .then(() => {
+              .finally(() => {
                 prisma.check
                   .update({
                     where: { id: check.id },

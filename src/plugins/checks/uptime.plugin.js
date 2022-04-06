@@ -55,7 +55,7 @@ async function uptimePlugin(server, _opts) {
                   };
                 }
               })
-              .then(() => {
+              .finally(() => {
                 prisma.check
                   .update({
                     where: { id: check.id },

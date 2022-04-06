@@ -4,7 +4,7 @@ const { checksSchema } = require('./checks.schema');
 const monitorBaseSchema = S.object()
   .additionalProperties(false)
   .prop('url', S.string().format(S.FORMATS.URL).required())
-  .prop('label', S.string().format(S.FORMATS.HOSTNAME));
+  .prop('label', S.string());
 
 const monitorSchema = S.object()
   .prop('id', S.integer())
