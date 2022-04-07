@@ -11,7 +11,7 @@ async function notifyPlugin(server, _opts) {
         text: message,
       },
       (err, info) => {
-        console.log(info);
+        console.log(err);
       }
     );
   };

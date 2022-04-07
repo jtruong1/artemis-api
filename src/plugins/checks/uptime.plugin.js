@@ -32,10 +32,12 @@ async function uptimePlugin(server, _opts) {
               return;
             }
 
+            const monitor = check.monitor;
+
             let data = {};
 
             server.axios
-              .get(check.monitor.url)
+              .get(monitor.url)
               .then((res) => {
                 data = {
                   status: 'up',
@@ -63,8 +65,15 @@ async function uptimePlugin(server, _opts) {
                   })
                   .then(() => {
                     server.log.info(
-                      `[uptime] monitor ${check.monitor.id} is ${data.status}`
+                      `[uptime] monitor ${monitor.id} is ${data.status}`
                     );
+
+                    if (data.status === 'down') {
+                      server.notify(
+                        monitor.user,
+                        `Your monitor ${monitor.label} is currently down!`
+                      );
+                    }
                   })
                   .catch((err) => {
                     server.log.error(err);
@@ -81,10 +90,7 @@ async function uptimePlugin(server, _opts) {
     }
   );
 
-  const job = new SimpleIntervalJob(
-    { seconds: 30, runImmediately: true },
-    task
-  );
+  const job = new SimpleIntervalJob({ seconds: 5, runImmediately: true }, task);
 
   server.scheduler.addSimpleIntervalJob(job);
 }
