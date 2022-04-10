@@ -1,12 +1,17 @@
 import fp from 'fastify-plugin';
 import nodemailer from 'fastify-nodemailer';
-import mailConfig from '../../configs/mail.config.js';
 
 async function mailPlugin(server, _opts) {
-  const { fromAddress, fromName, ...options } = mailConfig;
+  const { config } = server;
 
   server.register(nodemailer, {
-    ...options,
+    host: config.MAIL_HOST,
+    port: config.MAIL_PORT,
+    secure: config.MAIL_PORT === 465,
+    auth: {
+      user: config.MAIL_USERNAME,
+      pass: config.MAIL_PASSWORD,
+    },
   });
 }
 

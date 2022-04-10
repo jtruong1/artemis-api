@@ -1,23 +1,23 @@
 import fp from 'fastify-plugin';
 import cookie from 'fastify-cookie';
 import jwt from 'fastify-jwt';
-import appConfig from '../configs/app.config.js';
-import securityConfig from '../configs/security.config.js';
 
 async function authPlugin(server, _opts) {
+  const { config } = server;
+
   server.register(jwt, {
-    secret: appConfig.key,
+    secret: config.APP_KEY,
     cookie: {
       cookieName: 'token',
       signed: true,
     },
     sign: {
-      expiresIn: securityConfig.jwt.expiresIn,
+      expiresIn: '1d',
     },
   });
 
   server.register(cookie, {
-    secret: appConfig.key,
+    secret: config.APP_KEY,
   });
 
   server.decorate('authenticate', async (req, res) => {

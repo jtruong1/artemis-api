@@ -1,8 +1,9 @@
 import { hash, compare } from 'bcrypt';
-import securityConfig from '../configs/security.config.js';
+
+const saltOrRounds = 10;
 
 const hashPassword = (password) => {
-  return hash(password, securityConfig.hash.saltOrRounds);
+  return hash(password, saltOrRounds);
 };
 
 const comparePassword = (password, hashedPassword) => {

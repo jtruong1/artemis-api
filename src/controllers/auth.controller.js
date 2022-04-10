@@ -56,7 +56,7 @@ async function sendAccessToken(user, code, req, res) {
     .cookie('token', token, {
       domain: 'localhost',
       path: '/',
-      // secure: true,
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       sameSite: true,
       signed: true,

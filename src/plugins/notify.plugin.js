@@ -1,11 +1,12 @@
 import fp from 'fastify-plugin';
-import mailConfig from '../configs/mail.config.js';
 
 async function notifyPlugin(server, _opts) {
+  const { config } = server;
+
   const notify = (user, message) => {
     server.nodemailer.sendMail(
       {
-        from: `${mailConfig.fromName} <${mailConfig.fromAddress}>`,
+        from: `${config.MAIL_FROM_NAME} <${config.MAIL_FROM_ADDRESS}>`,
         to: user.email,
         subject: 'One of your sites is down!',
         text: message,

@@ -3,7 +3,7 @@ import axios from 'axios';
 import https from 'https';
 
 async function axiosPlugin(server, _opts) {
-  const instance = axios.create({
+  const http = axios.create({
     headers: {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
@@ -14,7 +14,7 @@ async function axiosPlugin(server, _opts) {
     }),
   });
 
-  instance.interceptors.request.use(
+  http.interceptors.request.use(
     (config) => {
       config.metadata = { startTime: Date.now() };
       return config;
@@ -24,7 +24,7 @@ async function axiosPlugin(server, _opts) {
     }
   );
 
-  instance.interceptors.response.use(
+  http.interceptors.response.use(
     (res) => {
       res.duration = Date.now() - res.config.metadata.startTime;
       return res;
@@ -34,7 +34,7 @@ async function axiosPlugin(server, _opts) {
     }
   );
 
-  server.decorate('axios', instance);
+  server.decorate('axios', http);
 }
 
 export default fp(axiosPlugin, { name: 'axios' });
