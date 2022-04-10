@@ -28,7 +28,7 @@
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "extract-domain": "^2.4.1",
-    "fastify": "^3.27.4",
+    "fastify": "^3.28.0",
     "fastify-autoload": "^3.11.0",
     "fastify-cookie": "^5.6.0",
     "fastify-cors": "^6.0.3",
@@ -39,11 +39,11 @@
     "fastify-schedule": "^1.0.0",
     "fastify-sensible": "^3.1.2",
     "fluent-json-schema": "^3.1.0",
-    "pino-pretty": "^7.6.0",
     "psl": "^1.8.0",
     "toad-scheduler": "^1.6.0"
   },
   "devDependencies": {
+    "pino-pretty": "^7.6.1",
     "prisma": "^3.12.0"
   }
 }
