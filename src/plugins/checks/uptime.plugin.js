@@ -64,11 +64,9 @@ async function uptimePlugin(server, _opts) {
                     data: { ...data, checkedAt: new Date() },
                   })
                   .then(() => {
-                    server.log.info(
-                      `[uptime] monitor ${monitor.id} is ${data.status}`
-                    );
-
                     if (data.status === 'down') {
+                      server.log.info(`[uptime] monitor ${monitor.id} is down`);
+
                       server.notify(
                         monitor.user,
                         `Your monitor ${monitor.label} is currently down!`
@@ -90,7 +88,10 @@ async function uptimePlugin(server, _opts) {
     }
   );
 
-  const job = new SimpleIntervalJob({ seconds: 5, runImmediately: true }, task);
+  const job = new SimpleIntervalJob(
+    { seconds: 30, runImmediately: true },
+    task
+  );
 
   server.scheduler.addSimpleIntervalJob(job);
 }

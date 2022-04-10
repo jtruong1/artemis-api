@@ -65,9 +65,11 @@ async function certificatePlugin(server, _opts) {
                     data: { ...data, checkedAt: new Date() },
                   })
                   .then(() => {
-                    server.log.info(
-                      `[certificate] monitor ${check.monitor.id} is ${data.status}`
-                    );
+                    if (data.status === 'down') {
+                      server.log.info(
+                        `[certificate] monitor ${check.monitor.id} is down`
+                      );
+                    }
                   })
                   .catch((err) => {
                     server.log.error(err);
