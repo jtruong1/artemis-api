@@ -2,7 +2,10 @@ import {
   getAllUsersHandler,
   getSingleUserHandler,
 } from '../controllers/users.controller.js';
-import { userSchema, usersSchema } from '../schemas/users.schema.js';
+import {
+  userResponseSchema,
+  usersResponseSchema,
+} from '../schemas/users.schema.js';
 
 export const autoPrefix = '/users';
 
@@ -12,7 +15,7 @@ async function userRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: usersSchema,
+          200: usersResponseSchema,
         },
       },
     },
@@ -24,7 +27,7 @@ async function userRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: userSchema,
+          200: userResponseSchema,
         },
       },
     },

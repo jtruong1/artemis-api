@@ -1,23 +1,20 @@
 import S from 'fluent-json-schema';
-import { userBaseSchema } from './users.schema.js';
+import { userSchema } from './users.schema.js';
 
-const registerSchema = userBaseSchema;
+const registerBodySchema = userSchema.only(['email', 'name', 'password']);
 
-const registerResponseSchema = S.object().prop('token', S.string());
+const loginBodySchema = userSchema.only(['email', 'password']);
 
-const loginSchema = userBaseSchema.without('name');
+const tokenResponseSchema = S.object().prop('token', S.string());
 
-const loginResponseSchema = S.object().prop('token', S.string());
-
-const profileSchema = S.object()
+const profileResponseSchema = S.object()
   .prop('id', S.integer())
   .prop('name', S.string())
   .prop('email', S.string());
 
 export {
-  registerSchema,
-  registerResponseSchema,
-  loginSchema,
-  loginResponseSchema,
-  profileSchema,
+  registerBodySchema,
+  loginBodySchema,
+  tokenResponseSchema,
+  profileResponseSchema,
 };

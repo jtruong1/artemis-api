@@ -4,11 +4,10 @@ import {
   getProfileHandler,
 } from '../controllers/auth.controller.js';
 import {
-  registerSchema,
-  registerResponseSchema,
-  loginSchema,
-  loginResponseSchema,
-  profileSchema,
+  registerBodySchema,
+  loginBodySchema,
+  tokenResponseSchema,
+  profileResponseSchema,
 } from '../schemas/auth.schema.js';
 
 export const autoPrefix = '/auth';
@@ -18,9 +17,9 @@ async function authRoutes(server, _opts) {
     '/register',
     {
       schema: {
-        body: registerSchema,
+        body: registerBodySchema,
         response: {
-          201: registerResponseSchema,
+          201: tokenResponseSchema,
         },
       },
     },
@@ -31,9 +30,9 @@ async function authRoutes(server, _opts) {
     '/login',
     {
       schema: {
-        body: loginSchema,
+        body: loginBodySchema,
         response: {
-          200: loginResponseSchema,
+          200: tokenResponseSchema,
         },
       },
     },
@@ -45,7 +44,7 @@ async function authRoutes(server, _opts) {
     {
       schema: {
         response: {
-          200: profileSchema,
+          200: profileResponseSchema,
         },
       },
       onRequest: [server.authenticate],
