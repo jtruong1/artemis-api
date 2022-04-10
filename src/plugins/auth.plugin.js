@@ -1,10 +1,11 @@
 const fp = require('fastify-plugin');
-const jwtPlugin = require('fastify-jwt');
+const cookie = require('fastify-cookie');
+const jwt = require('fastify-jwt');
 const appConfig = require('../configs/app.config');
 const securityConfig = require('../configs/security.config');
 
 async function authPlugin(server, _opts) {
-  server.register(jwtPlugin, {
+  server.register(jwt, {
     secret: appConfig.key,
     cookie: {
       cookieName: 'token',
@@ -13,6 +14,10 @@ async function authPlugin(server, _opts) {
     sign: {
       expiresIn: securityConfig.jwt.expiresIn,
     },
+  });
+
+  server.register(cookie, {
+    secret: appConfig.key,
   });
 
   server.decorate('authenticate', async (req, res) => {
@@ -24,4 +29,4 @@ async function authPlugin(server, _opts) {
   });
 }
 
-module.exports = fp(authPlugin);
+module.exports = fp(authPlugin, { name: 'auth' });
