@@ -1,10 +1,10 @@
-const {
+import {
   createStatusPage,
   getAllStatusPages,
   getSingleStatusPage,
   updateStatusPage,
   deleteStatusPage,
-} = require('../services/status-pages.service');
+} from '../services/status-pages.service.js';
 
 async function createStatusPageHandler(req, res) {
   const data = req.body;
@@ -73,7 +73,7 @@ async function deleteStatusPageHandler(req, res) {
   return await deleteStatusPage(id);
 }
 
-module.exports = {
+export {
   createStatusPageHandler,
   getAllStatusPagesHandler,
   getSingleStatusPageHandler,

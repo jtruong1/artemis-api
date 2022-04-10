@@ -1,12 +1,12 @@
-const bcrypt = require('bcrypt');
-const securityConfig = require('../configs/security.config');
+import { hash, compare } from 'bcrypt';
+import securityConfig from '../configs/security.config.js';
 
-const hashPassword = (str) => {
-  return bcrypt.hash(str, securityConfig.hash.saltRounds);
+const hashPassword = (password) => {
+  return hash(password, securityConfig.hash.saltOrRounds);
 };
 
-const comparePassword = (str, hash) => {
-  return bcrypt.compare(str, hash);
+const comparePassword = (password, hashedPassword) => {
+  return compare(password, hashedPassword);
 };
 
-module.exports = { hashPassword, comparePassword };
+export { hashPassword, comparePassword };

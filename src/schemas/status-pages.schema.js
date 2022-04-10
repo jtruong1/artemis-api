@@ -1,5 +1,5 @@
-const S = require('fluent-json-schema');
-const { monitorsSchema } = require('./monitors.schema');
+import S from 'fluent-json-schema';
+import { monitorsSchema } from './monitors.schema.js';
 
 const statusPageSchema = S.object()
   .prop('id', S.integer())
@@ -19,7 +19,7 @@ const updateStatusPageSchema = S.object()
   .prop('slug', S.string())
   .prop('label', S.string());
 
-module.exports = {
+export {
   statusPageSchema,
   statusPagesSchema,
   createStatusPageSchema,

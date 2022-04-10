@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
+import Prisma from '@prisma/client';
 
-const prisma = new PrismaClient();
+const prisma = new Prisma.PrismaClient();
 
 // Create an incident whenever a check fails.
 prisma.$use(async (params, next) => {
@@ -31,4 +31,4 @@ prisma.$use(async (params, next) => {
   return await next(params);
 });
 
-module.exports = prisma;
+export default prisma;

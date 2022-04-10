@@ -1,7 +1,10 @@
-const fastify = require('fastify');
-const autoload = require('fastify-autoload');
-const path = require('path');
-const appConfig = require('./configs/app.config');
+import fastify from 'fastify';
+import autoload from 'fastify-autoload';
+import cors from 'fastify-cors';
+import helmet from 'fastify-helmet';
+import schedule from 'fastify-schedule';
+import sensible from 'fastify-sensible';
+import { join } from 'desm';
 
 const createServer = () => {
   const server = fastify({
@@ -16,26 +19,25 @@ const createServer = () => {
     },
   });
 
-  server
-    .register(require('fastify-cors'))
-    .register(require('fastify-helmet'))
-    .register(require('fastify-schedule'))
-    .register(require('fastify-sensible'));
+  server.register(cors);
+  server.register(helmet);
+  server.register(schedule);
+  server.register(sensible);
 
   server.get('/', async (req, res) => {
     return { hello: 'world' };
   });
 
   server.register(autoload, {
-    dir: path.join(__dirname, 'plugins'),
+    dir: join(import.meta.url, 'plugins'),
   });
 
   server.register(autoload, {
-    dir: path.join(__dirname, 'routes'),
+    dir: join(import.meta.url, 'routes'),
     options: { prefix: '/api' },
   });
 
   return server;
 };
 
-module.exports = { createServer };
+export { createServer };

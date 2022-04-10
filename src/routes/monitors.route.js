@@ -1,16 +1,18 @@
-const {
+import {
   createMonitorHandler,
   getAllMonitorsHandler,
   getSingleMonitorHandler,
   updateMonitorHandler,
   deleteMonitorHandler,
-} = require('../controllers/monitors.controller');
-const {
+} from '../controllers/monitors.controller.js';
+import {
   monitorSchema,
   monitorsSchema,
   createMonitorSchema,
   updateMonitorSchema,
-} = require('../schemas/monitors.schema');
+} from '../schemas/monitors.schema.js';
+
+export const autoPrefix = '/monitors';
 
 async function monitorRoutes(server, _opts) {
   server.post(
@@ -81,6 +83,4 @@ async function monitorRoutes(server, _opts) {
   );
 }
 
-module.exports = monitorRoutes;
-
-module.exports.autoPrefix = '/monitors';
+export default monitorRoutes;

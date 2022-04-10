@@ -1,5 +1,5 @@
-const { createUser, getUserByEmail } = require('../services/users.service');
-const { hashPassword, comparePassword } = require('../utils/hash.util');
+import { createUser, getUserByEmail } from '../services/users.service.js';
+import { hashPassword, comparePassword } from '../utils/hash.util.js';
 
 async function registerHandler(req, res) {
   const { password, ...input } = req.body;
@@ -64,8 +64,4 @@ async function sendAccessToken(user, code, req, res) {
     .send({ token });
 }
 
-module.exports = {
-  registerHandler,
-  loginHandler,
-  getProfileHandler,
-};
+export { registerHandler, loginHandler, getProfileHandler };

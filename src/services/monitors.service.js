@@ -1,4 +1,4 @@
-const prisma = require('../utils/prisma.util');
+import prisma from '../utils/prisma.util.js';
 
 async function createMonitor(data) {
   return prisma.monitor.create({
@@ -72,7 +72,7 @@ async function deleteMonitor(id) {
   });
 }
 
-module.exports = {
+export {
   createMonitor,
   getAllMonitors,
   getSingleMonitor,

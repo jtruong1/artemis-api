@@ -1,13 +1,13 @@
-const fp = require('fastify-plugin');
-const nodemailerPlugin = require('fastify-nodemailer');
-const mailConfig = require('../../configs/mail.config');
+import fp from 'fastify-plugin';
+import nodemailer from 'fastify-nodemailer';
+import mailConfig from '../../configs/mail.config.js';
 
 async function mailPlugin(server, _opts) {
   const { fromAddress, fromName, ...options } = mailConfig;
 
-  server.register(nodemailerPlugin, {
+  server.register(nodemailer, {
     ...options,
   });
 }
 
-module.exports = fp(mailPlugin);
+export default fp(mailPlugin, { name: 'mail' });

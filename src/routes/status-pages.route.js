@@ -1,16 +1,18 @@
-const {
+import {
   createStatusPageHandler,
   getAllStatusPagesHandler,
   getSingleStatusPageHandler,
   updateStatusPageHandler,
   deleteStatusPageHandler,
-} = require('../controllers/status-pages.controller');
-const {
+} from '../controllers/status-pages.controller.js';
+import {
   statusPageSchema,
   statusPagesSchema,
   createStatusPageSchema,
   updateStatusPageSchema,
-} = require('../schemas/status-pages.schema');
+} from '../schemas/status-pages.schema.js';
+
+export const autoPrefix = '/status-pages';
 
 async function statusPageRoutes(server, _opts) {
   server.post(
@@ -81,6 +83,4 @@ async function statusPageRoutes(server, _opts) {
   );
 }
 
-module.exports = statusPageRoutes;
-
-module.exports.autoPrefix = '/status-pages';
+export default statusPageRoutes;

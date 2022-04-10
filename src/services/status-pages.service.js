@@ -1,4 +1,4 @@
-const prisma = require('../utils/prisma.util');
+import prisma from '../utils/prisma.util.js';
 
 async function createStatusPage(data) {
   const { monitor_ids, ...input } = data;
@@ -93,7 +93,7 @@ async function deleteStatusPage(id) {
   });
 }
 
-module.exports = {
+export {
   createStatusPage,
   getAllStatusPages,
   getSingleStatusPage,

@@ -1,6 +1,6 @@
-const fp = require('fastify-plugin');
-const axios = require('axios');
-const https = require('https');
+import fp from 'fastify-plugin';
+import axios from 'axios';
+import https from 'https';
 
 async function axiosPlugin(server, _opts) {
   const instance = axios.create({
@@ -37,4 +37,4 @@ async function axiosPlugin(server, _opts) {
   server.decorate('axios', instance);
 }
 
-module.exports = fp(axiosPlugin);
+export default fp(axiosPlugin, { name: 'axios' });

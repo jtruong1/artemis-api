@@ -1,11 +1,11 @@
-const extractDomain = require('extract-domain');
-const {
+import extractDomain from 'extract-domain';
+import {
   createMonitor,
   getAllMonitors,
   getSingleMonitor,
   updateMonitor,
   deleteMonitor,
-} = require('../services/monitors.service');
+} from '../services/monitors.service.js';
 
 async function createMonitorHandler(req, res) {
   const { url, label } = req.body;
@@ -93,7 +93,7 @@ function parseUrl(url) {
   };
 }
 
-module.exports = {
+export {
   createMonitorHandler,
   getAllMonitorsHandler,
   getSingleMonitorHandler,

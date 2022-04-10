@@ -1,8 +1,8 @@
-const fp = require('fastify-plugin');
-const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
-const { add, isFuture } = require('date-fns');
-const prisma = require('../../utils/prisma.util');
-const { parseCertificate } = require('../../utils/certificate.util');
+import fp from 'fastify-plugin';
+import { SimpleIntervalJob, AsyncTask } from 'toad-scheduler';
+import { add, isFuture } from 'date-fns';
+import prisma from '../../utils/prisma.util.js';
+import { parseCertificate } from '../../utils/certificate.util.js';
 
 async function certificatePlugin(server, _opts) {
   const task = new AsyncTask(
@@ -92,4 +92,4 @@ async function certificatePlugin(server, _opts) {
   server.scheduler.addSimpleIntervalJob(job);
 }
 
-module.exports = fp(certificatePlugin);
+export default fp(certificatePlugin, { name: 'certificate' });

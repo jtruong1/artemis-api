@@ -1,4 +1,4 @@
-const { differenceInDays } = require('date-fns');
+import { differenceInDays } from 'date-fns';
 
 const parseCertificate = (certificate) => {
   const { issuer, subjectaltname, valid_from, valid_to } = certificate;
@@ -17,4 +17,4 @@ const parseCertificate = (certificate) => {
   };
 };
 
-module.exports = { parseCertificate };
+export { parseCertificate };

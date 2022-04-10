@@ -16,4 +16,4 @@ const handleErrorResponse = (error) => {
   throw new Error(message);
 };
 
-module.exports = { handleResponse, handleErrorResponse };
+export { handleResponse, handleErrorResponse };

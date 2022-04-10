@@ -1,5 +1,5 @@
-const S = require('fluent-json-schema');
-const { checksSchema } = require('./checks.schema');
+import S from 'fluent-json-schema';
+import { checksSchema } from './checks.schema.js';
 
 const monitorBaseSchema = S.object()
   .prop('url', S.string().format(S.FORMATS.URL).required())
@@ -17,7 +17,7 @@ const createMonitorSchema = monitorBaseSchema;
 
 const updateMonitorSchema = monitorBaseSchema;
 
-module.exports = {
+export {
   monitorSchema,
   monitorsSchema,
   createMonitorSchema,

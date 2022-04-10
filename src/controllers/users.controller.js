@@ -1,4 +1,4 @@
-const { getAllUsers, getUserById } = require('../services/users.service');
+import { getAllUsers, getUserById } from '../services/users.service.js';
 
 async function getAllUsersHandler(req, res) {
   return await getAllUsers();
@@ -16,7 +16,4 @@ async function getSingleUserHandler(req, res) {
   return user;
 }
 
-module.exports = {
-  getAllUsersHandler,
-  getSingleUserHandler,
-};
+export { getAllUsersHandler, getSingleUserHandler };

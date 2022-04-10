@@ -1,5 +1,5 @@
-const fp = require('fastify-plugin');
-const mailConfig = require('../configs/mail.config');
+import fp from 'fastify-plugin';
+import mailConfig from '../configs/mail.config.js';
 
 async function notifyPlugin(server, _opts) {
   const notify = (user, message) => {
@@ -21,4 +21,4 @@ async function notifyPlugin(server, _opts) {
   server.decorate('notify', notify);
 }
 
-module.exports = fp(notifyPlugin);
+export default fp(notifyPlugin, { name: 'notify' });

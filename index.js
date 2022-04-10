@@ -1,7 +1,6 @@
-require('dotenv').config();
-
-const { createServer } = require('./src/server');
-const appConfig = require('./src/configs/app.config');
+import 'dotenv/config';
+import { createServer } from './src/server.js';
+import appConfig from './src/configs/app.config.js';
 
 const init = async () => {
   const server = createServer();

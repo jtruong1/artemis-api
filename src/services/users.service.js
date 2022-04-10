@@ -1,4 +1,4 @@
-const prisma = require('../utils/prisma.util');
+import prisma from '../utils/prisma.util.js';
 
 async function createUser(data) {
   return prisma.user.create({
@@ -22,9 +22,4 @@ async function getUserByEmail(email) {
   });
 }
 
-module.exports = {
-  createUser,
-  getAllUsers,
-  getUserById,
-  getUserByEmail,
-};
+export { createUser, getAllUsers, getUserById, getUserByEmail };

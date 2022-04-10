@@ -1,8 +1,8 @@
-const fp = require('fastify-plugin');
-const { SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
-const { add, isFuture } = require('date-fns');
-const prisma = require('../../utils/prisma.util');
-const { handleErrorResponse } = require('../../utils/response.util');
+import fp from 'fastify-plugin';
+import { SimpleIntervalJob, AsyncTask } from 'toad-scheduler';
+import { add, isFuture } from 'date-fns';
+import prisma from '../../utils/prisma.util.js';
+import { handleErrorResponse } from '../../utils/response.util.js';
 
 async function uptimePlugin(server, _opts) {
   const task = new AsyncTask(
@@ -95,4 +95,4 @@ async function uptimePlugin(server, _opts) {
   server.scheduler.addSimpleIntervalJob(job);
 }
 
-module.exports = fp(uptimePlugin);
+export default fp(uptimePlugin, { name: 'uptime' });

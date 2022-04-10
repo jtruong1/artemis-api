@@ -1,4 +1,4 @@
-const S = require('fluent-json-schema');
+import S from 'fluent-json-schema';
 
 const TYPES = {
   UPTIME: 'uptime',
@@ -44,9 +44,4 @@ const createCheckSchema = checkBaseSchema;
 
 const updateCheckSchema = checkBaseSchema;
 
-module.exports = {
-  checkSchema,
-  checksSchema,
-  createCheckSchema,
-  updateCheckSchema,
-};
+export { checkSchema, checksSchema, createCheckSchema, updateCheckSchema };

@@ -1,8 +1,8 @@
-const fp = require('fastify-plugin');
-const cookie = require('fastify-cookie');
-const jwt = require('fastify-jwt');
-const appConfig = require('../configs/app.config');
-const securityConfig = require('../configs/security.config');
+import fp from 'fastify-plugin';
+import cookie from 'fastify-cookie';
+import jwt from 'fastify-jwt';
+import appConfig from '../configs/app.config.js';
+import securityConfig from '../configs/security.config.js';
 
 async function authPlugin(server, _opts) {
   server.register(jwt, {
@@ -29,4 +29,4 @@ async function authPlugin(server, _opts) {
   });
 }
 
-module.exports = fp(authPlugin, { name: 'auth' });
+export default fp(authPlugin, { name: 'auth' });

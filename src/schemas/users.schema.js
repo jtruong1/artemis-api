@@ -1,4 +1,4 @@
-const S = require('fluent-json-schema');
+import S from 'fluent-json-schema';
 
 const userBaseSchema = S.object()
   .additionalProperties(false)
@@ -14,8 +14,4 @@ const userSchema = S.object()
 
 const usersSchema = S.array().items(userSchema);
 
-module.exports = {
-  userBaseSchema,
-  userSchema,
-  usersSchema,
-};
+export { userBaseSchema, userSchema, usersSchema };

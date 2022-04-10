@@ -1,5 +1,5 @@
-const S = require('fluent-json-schema');
-const { userBaseSchema } = require('./users.schema');
+import S from 'fluent-json-schema';
+import { userBaseSchema } from './users.schema.js';
 
 const registerSchema = userBaseSchema;
 
@@ -14,7 +14,7 @@ const profileSchema = S.object()
   .prop('name', S.string())
   .prop('email', S.string());
 
-module.exports = {
+export {
   registerSchema,
   registerResponseSchema,
   loginSchema,

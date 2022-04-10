@@ -1,10 +1,8 @@
-const securityConfig = {
+export default {
   jwt: {
     expiresIn: '1d',
   },
   hash: {
-    saltRounds: 10,
+    saltOrRounds: 10,
   },
 };
-
-module.exports = securityConfig;

@@ -1,8 +1,10 @@
-const {
+import {
   getAllUsersHandler,
   getSingleUserHandler,
-} = require('../controllers/users.controller');
-const { userSchema, usersSchema } = require('../schemas/users.schema');
+} from '../controllers/users.controller.js';
+import { userSchema, usersSchema } from '../schemas/users.schema.js';
+
+export const autoPrefix = '/users';
 
 async function userRoutes(server, _opts) {
   server.get(
@@ -30,6 +32,4 @@ async function userRoutes(server, _opts) {
   );
 }
 
-module.exports = userRoutes;
-
-module.exports.autoPrefix = '/users';
+export default userRoutes;
